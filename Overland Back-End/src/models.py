@@ -106,9 +106,8 @@ class DataModel(ModelBase, db.Model):
     first_name = db.Column('first_name', db.String(30), unique=False, nullable=False)
     last_name = db.Column('last_name', db.String(30), unique=False, nullable=False)
 
-    def __init__(self, id_data, id_client_rol, id_gender, id_pathologies, id_nationality, phone, born, password, email,
+    def __init__(self, id_client_rol, id_gender, id_pathologies, id_nationality, phone, born, password, email,
                  observ_lunch, first_name, last_name, card_id):
-        self.id_data = id_data
         self.id_client_rol = id_client_rol
         self.id_gender = id_gender
         self.id_pathologies = id_pathologies
@@ -124,3 +123,39 @@ class DataModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'Id : {self.id_data} Document : {self.card_id} Name : {self.first_name}'
+
+
+class GenreSchema(ma.Schema):
+    id_genre = fields.Integer()
+    genre_name = fields.String()
+
+
+class GenreModel(ModelBase, db.Model):
+    __tablename__ = 'genre'
+
+    id_genre = db.Column('id_genre', db.Integer, autoincrement=True, primary_key=True)
+    genre_name = db.Column('genre_name', db.String(15), default='Unauthorized')
+
+    def __init__(self, genre_name):
+        self.genre_name = genre_name
+
+    def __repr__(self):
+        return f'{self.genre_name} name'
+
+
+class NationalitySchema(ma.Schema):
+    id_Nationality = fields.Integer()
+    nationality_name = fields.String()
+
+
+class NationalityModel(ModelBase, db.Model):
+    __tablename__ = 'nationality'
+
+    id_Nationality = db.Column('id_Nationality ', db.Integer, autoincrement=True, primary_key=True)
+    nationality_name = db.Column('nationality_name', db.String(40), default='Unauthorized')
+
+    def __init__(self, nationality_name):
+        self.nationality_name = nationality_name
+
+    def __repr__(self):
+        return f'{self.nationality_name} nationality'
