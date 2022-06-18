@@ -144,14 +144,14 @@ class GenreModel(ModelBase, db.Model):
 
 
 class NationalitySchema(ma.Schema):
-    id_Nationality = fields.Integer()
+    id_nationality = fields.Integer()
     nationality_name = fields.String()
 
 
 class NationalityModel(ModelBase, db.Model):
     __tablename__ = 'nationality'
 
-    id_Nationality = db.Column('id_Nationality ', db.Integer, autoincrement=True, primary_key=True)
+    id_nationality = db.Column('id_nationality ', db.Integer, autoincrement=True, primary_key=True)
     nationality_name = db.Column('nationality_name', db.String(40), default='Unauthorized')
 
     def __init__(self, nationality_name):
@@ -159,3 +159,121 @@ class NationalityModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'{self.nationality_name} nationality'
+
+
+class PathologiesSchema(ma.Schema):
+    id_pathologies = fields.Integer()
+    pathologies_name = fields.String()
+
+
+class PathologiesModel(ModelBase, db.Model):
+    __tablename__ = 'pathologies'
+
+    id_pathologies = db.Column('id_pathologies ', db.Integer, autoincrement=True, primary_key=True)
+    pathologies_name = db.Column('pathologies_name', db.String(40), default='Unauthorized')
+
+    def __init__(self, pathologies_name):
+        self.pathologies_name = pathologies_name
+
+    def __repr__(self):
+        return f'{self.pathologies_name} pathologies'
+
+
+class ClientSchema(ma.Schema):
+    id_rol = fields.Integer()
+    client_name = fields.String()
+
+
+class ClientModel(ModelBase, db.Model):
+    __tablename__ = 'client'
+
+    id_rol = db.Column('id_rol ', db.Integer, autoincrement=True, primary_key=True)
+    client_name = db.Column('client_name', db.String(40), default='Unauthorized')
+
+    def __init__(self, client_name):
+        self.client_name = client_name
+
+    def __repr__(self):
+        return f'{self.client_name} client'
+
+
+class VehicleSchema(ma.Schema):
+    id_vehicle = fields.Integer()
+    vehicle_name = fields.String()
+    vehicle_mark = fields.String()
+    vehicle_oil = fields.String()
+    vehicle_model = fields.Integer()
+    vehicle_patent = fields.Integer()
+    vehicle_color = fields.String()
+    vehicle_observation = fields.String()
+
+
+class VehicleModel(ModelBase, db.Model):
+    __tablename__ = 'vehicle'
+
+    id_vehicle = db.Column('id_vehicle ', db.Integer, autoincrement=True, primary_key=True)
+    vehicle_name = db.Column('vehicle_name', db.String(20), default='Unauthorized')
+    vehicle_mark = db.Column('vehicle_mark', db.String(15), default='Unauthorized')
+    vehicle_oil = db.Column('vehicle_oil', db.String(40), default='Unauthorized')
+    vehicle_model = db.Column('vehicle_model', db.Integer, default='Unauthorized')
+    vehicle_patent = db.Column('vehicle_patent', db.Integer, default='Unauthorized')
+    vehicle_color = db.Column('vehicle_color', db.String(40), default='Unauthorized')
+    vehicle_observation = db.Column('vehicle_observation ', db.String(200), default='Unauthorized')
+
+    def __init__(self, vehicle_name, vehicle_mark, vehicle_oil, vehicle_model, vehicle_patent, vehicle_color,
+                 vehicle_observation):
+        self.vehicle_name = vehicle_name
+        self.vehicle_mark = vehicle_mark
+        self.vehicle_oil = vehicle_oil
+        self.vehicle_model = vehicle_model
+        self.vehicle_patent = vehicle_patent
+        self.vehicle_color = vehicle_color
+        self.vehicle_observation = vehicle_observation
+
+    def __repr__(self):
+        return f'{self.vehicle_name} vehicle'
+
+
+class RoomsSchema(ma.Schema):
+    id_rooms = fields.Integer()
+    rooms_name = fields.String()
+    rooms_beds = fields.Integer()
+    rooms_price = fields.Integer()
+
+
+class RoomsModel(ModelBase, db.Model):
+    __tablename__ = 'rooms'
+
+    id_rooms = db.Column('id_rooms ', db.Integer, autoincrement=True, primary_key=True)
+    rooms_name = db.Column('client_name', db.String(40), default='Unauthorized')
+    rooms_beds = db.Column('rooms_beds', db.Integer, default='Unauthorized')
+    rooms_price = db.Column('rooms_price', db.Integer, default='Unauthorized')
+
+    def __init__(self, rooms_name, rooms_beds, rooms_price):
+        self.rooms_name = rooms_name
+        self.rooms_beds = rooms_beds
+        self.rooms_price = rooms_price
+
+    def __repr__(self):
+        return f'{self.rooms_name} rooms'
+
+
+class LunchSchema(ma.Schema):
+    id_lunch = fields.Integer()
+    lunch_name = fields.String()
+    lunch_price = fields.Integer()
+
+
+class LunchtModel(ModelBase, db.Model):
+    __tablename__ = 'lunch'
+
+    id_rol = db.Column('id_rol ', db.Integer, autoincrement=True, primary_key=True)
+    lunch_name = db.Column('lunch_name', db.String(40), default='Unauthorized')
+    lunch_price = db.Column('lunch_price', db.Integer, default='Unauthorized')
+
+    def __init__(self, lunch_name, lunch_price):
+        self.lunch_name = lunch_name
+        self.lunch_price = lunch_price
+
+    def __repr__(self):
+        return f'{self.lunch_name} lunch'
