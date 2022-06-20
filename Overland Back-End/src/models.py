@@ -75,10 +75,10 @@ class RoleModel(ModelBase, db.Model):
 
 class DataSchema(ma.Schema):
     id_data = fields.Integer()
-    id_client_rol = fields.Integer()
-    id_gender = fields.Integer()
-    id_pathologies = fields.Integer()
-    id_nationality = fields.Integer()
+    client_rol = fields.Integer()
+    gender = fields.Integer()
+    pathologies = fields.Integer()
+    nationality = fields.Integer()
     phone = fields.Integer(required=True)
     born = fields.Date(required=True, format='%Y-%m-%d')
     password = fields.String(required=True)
@@ -94,10 +94,12 @@ class DataModel(ModelBase, db.Model):
 
     id_data = db.Column('id_data', db.Integer, autoincrement=True, primary_key=True)
     card_id = db.Column('card_id', db.Integer, unique=False, nullable=False, primary_key=True)
-    id_client_rol = db.Column('id_client_rol', db.ForeignKey('client.id_rol', ondelete='CASCADE'), nullable=False)
-    id_gender = db.Column('id_gender', db.ForeignKey('client.id_rol', ondelete='CASCADE'), nullable=False)
-    id_pathologies = db.Column('id_pathologies', db.ForeignKey('client.id_rol', ondelete='CASCADE'), nullable=False)
-    id_nationality = db.Column('id_nationality', db.ForeignKey('client.id_rol', ondelete='CASCADE'), nullable=False)
+    client_rol = db.Column('client_rol', db.ForeignKey('client.id', ondelete='CASCADE'), nullable=False)
+    gender = db.Column('gender', db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
+    pathologies = db.Column('pathologies', db.ForeignKey('pathologies.id_pathologies', ondelete='CASCADE'),
+                            nullable=False)
+    nationality = db.Column('nationality', db.ForeignKey('nationality.id_nationality', ondelete='CASCADE'),
+                            nullable=False)
     phone = db.Column('phone', db.Integer, unique=False, nullable=False)
     born = db.Column('born', db.Date, unique=False, nullable=False)
     password = db.Column('password', db.String(30), unique=False, nullable=False)
@@ -106,12 +108,12 @@ class DataModel(ModelBase, db.Model):
     first_name = db.Column('first_name', db.String(30), unique=False, nullable=False)
     last_name = db.Column('last_name', db.String(30), unique=False, nullable=False)
 
-    def __init__(self, id_client_rol, id_gender, id_pathologies, id_nationality, phone, born, password, email,
+    def __init__(self, client_rol, gender, pathologies, nationality, phone, born, password, email,
                  observ_lunch, first_name, last_name, card_id):
-        self.id_client_rol = id_client_rol
-        self.id_gender = id_gender
-        self.id_pathologies = id_pathologies
-        self.id_nationality = id_nationality
+        self.client_rol = client_rol
+        self.gender = gender
+        self.pathologies = pathologies
+        self.nationality = nationality
         self.phone = phone
         self.born = born
         self.email = email
@@ -125,73 +127,86 @@ class DataModel(ModelBase, db.Model):
         return f'Id : {self.id_data} Document : {self.card_id} Name : {self.first_name}'
 
 
-class GenreSchema(ma.Schema):
-    id_genre = fields.Integer()
-    genre_name = fields.String()
+class GenderSchema(ma.Schema):
+    id_gender = fields.Integer()
+    name = fields.String()
 
 
-class GenreModel(ModelBase, db.Model):
-    __tablename__ = 'genre'
+class GenderModel(ModelBase, db.Model):
+    __tablename__ = 'gender'
 
-    id_genre = db.Column('id_genre', db.Integer, autoincrement=True, primary_key=True)
-    genre_name = db.Column('genre_name', db.String(15), default='Unauthorized')
+    id_gender = db.Column('id_gender', db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column('name', db.String(15), default='Unauthorized')
 
-    def __init__(self, genre_name):
-        self.genre_name = genre_name
+    def __init__(self, name):
+        self.name = name
 
     def __repr__(self):
-        return f'{self.genre_name} name'
+        return f'{self.name} name'
 
 
 class NationalitySchema(ma.Schema):
     id_nationality = fields.Integer()
-    nationality_name = fields.String()
+    name = fields.String()
 
 
 class NationalityModel(ModelBase, db.Model):
     __tablename__ = 'nationality'
 
     id_nationality = db.Column('id_nationality ', db.Integer, autoincrement=True, primary_key=True)
-    nationality_name = db.Column('nationality_name', db.String(40), default='Unauthorized')
+    name = db.Column('name', db.String(40), default='Unauthorized')
 
-    def __init__(self, nationality_name):
-        self.nationality_name = nationality_name
+    def __init__(self, name):
+        self.name = name
 
     def __repr__(self):
-        return f'{self.nationality_name} nationality'
+        return f'{self.name} nationality'
 
 
 class PathologiesSchema(ma.Schema):
     id_pathologies = fields.Integer()
-    pathologies_name = fields.String()
+    name = fields.String()
 
 
 class PathologiesModel(ModelBase, db.Model):
     __tablename__ = 'pathologies'
 
     id_pathologies = db.Column('id_pathologies ', db.Integer, autoincrement=True, primary_key=True)
-    pathologies_name = db.Column('pathologies_name', db.String(40), default='Unauthorized')
+    name = db.Column('name', db.String(40), default='Unauthorized')
 
-    def __init__(self, pathologies_name):
-        self.pathologies_name = pathologies_name
+    def __init__(self, name):
+        self.name = name
 
     def __repr__(self):
-        return f'{self.pathologies_name} pathologies'
+        return f'{self.name} pathologies'
 
 
 class ClientSchema(ma.Schema):
-    id_rol = fields.Integer()
-    client_name = fields.String()
+    id_client = fields.Integer()
+    data = fields.Integer()
+    accompanist = fields.Integer()
+    vehicle = fields.Integer()
+    rol = fields.Integer()
+    hotel = fields.Integer()
 
 
 class ClientModel(ModelBase, db.Model):
     __tablename__ = 'client'
 
-    id_rol = db.Column('id_rol ', db.Integer, autoincrement=True, primary_key=True)
-    client_name = db.Column('client_name', db.String(40), default='Unauthorized')
+    id_client = db.Column('id_client ', db.Integer, autoincrement=True, primary_key=True)
+    data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    accompanist = db.Column('accompanist', db.ForeignKey('accompanist.id_accompanist', ondelete='CASCADE'),
+                            nullable=False)
+    vehicle = db.Column('vehicle', db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
+    rol = db.Column('rol', db.ForeignKey('rol.id_rol', ondelete='CASCADE'), nullable=False)
+    hotel = db.Column('hotel', db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
 
-    def __init__(self, client_name):
-        self.client_name = client_name
+    def __init__(self, data, accompanist, vehicle, rol, hotel):
+        self.data = data
+        self.accompanist = accompanist
+        self.vehicle = vehicle
+        self.rol = rol
+        self.hotel = hotel
 
     def __repr__(self):
         return f'{self.client_name} client'
@@ -245,12 +260,12 @@ class RoomsModel(ModelBase, db.Model):
     __tablename__ = 'rooms'
 
     id_rooms = db.Column('id_rooms ', db.Integer, autoincrement=True, primary_key=True)
-    rooms_name = db.Column('client_name', db.String(40), default='Unauthorized')
+    name = db.Column('name', db.String(40), default='Unauthorized')
     beds = db.Column('beds', db.Integer, default='Unauthorized')
     price = db.Column('price', db.Integer, default='Unauthorized')
 
-    def __init__(self, rooms_name, rooms_beds, price):
-        self.rooms_name = rooms_name
+    def __init__(self, name, beds, price):
+        self.name = name
         self.beds = beds
         self.price = price
 
@@ -264,10 +279,10 @@ class LunchSchema(ma.Schema):
     price = fields.Integer()
 
 
-class LunchtModel(ModelBase, db.Model):
+class LunchModel(ModelBase, db.Model):
     __tablename__ = 'lunch'
 
-    id_rol = db.Column('id_rol ', db.Integer, autoincrement=True, primary_key=True)
+    id_lunch = db.Column('id_lunch ', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(40), default='Unauthorized')
     price = db.Column('price', db.Integer, default='Unauthorized')
 
@@ -277,3 +292,54 @@ class LunchtModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'{self.name} lunch'
+
+
+class HotelSchema(ma.Schema):
+    id_hotel = fields.Integer()
+    rooms = fields.Integer()
+    name = fields.String()
+    lunch = fields.Integer()
+    address = fields.String()
+    quantity_rooms = fields.Integer()
+
+
+class HotelModel(ModelBase, db.Model):
+    __tablename__ = 'hotel'
+
+    id_hotel = db.Column('id_hotel ', db.Integer, autoincrement=True, primary_key=True)
+    rooms = db.Column('rooms', db.ForeignKey('rooms.id_rooms', ondelete='CASCADE'), nullable=False)
+    name = db.Column('name', db.String(60), default='Unauthorized')
+    lunch = db.Column('lunch', db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
+    address = db.Column('address', db.String(60), default='Unauthorized')
+    quantity_rooms = db.Column('address', db.Integer, default='Unauthorized')
+
+    def __init__(self, rooms, lunch, address, quantity_rooms, name):
+        self.rooms = rooms
+        self.name = name
+        self.lunch = lunch
+        self.address = address
+        self.quantity_rooms = quantity_rooms
+
+    def __repr__(self):
+        return f'{self.name} name'
+
+
+class AccompanistSchema(ma.Schema):
+    id_accompanist = fields.Integer()
+    client = fields.Integer()
+    data = fields.Integer()
+
+
+class AccompanistModel(ModelBase, db.Model):
+    __tablename__ = 'accompanist'
+
+    id_accompanist = db.Column('id_hotel ', db.Integer, autoincrement=True, primary_key=True)
+    client = db.Column('client', db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
+    data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+
+    def __init__(self, client, data):
+        self.client = client
+        self.data = data
+
+    def __repr__(self):
+        return f'{self.client} accompanist'
