@@ -81,8 +81,6 @@ class DataSchema(ma.Schema):
     nationality = fields.Integer()
     phone = fields.Integer(required=True)
     born = fields.Date(required=True, format='%Y-%m-%d')
-    password = fields.String(required=True)
-    email = fields.String(required=True)
     observ_lunch = fields.String()
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
@@ -102,13 +100,11 @@ class DataModel(ModelBase, db.Model):
                             nullable=False)
     phone = db.Column('phone', db.Integer, unique=False, nullable=False)
     born = db.Column('born', db.Date, unique=False, nullable=False)
-    password = db.Column('password', db.String(30), unique=False, nullable=False)
-    email = db.Column('email', db.String(40), unique=False, nullable=False)
     observ_lunch = db.Column('observ_lunch', db.String(255), unique=False, nullable=False)
     first_name = db.Column('first_name', db.String(30), unique=False, nullable=False)
     last_name = db.Column('last_name', db.String(30), unique=False, nullable=False)
 
-    def __init__(self, client_rol, gender, pathologies, nationality, phone, born, password, email,
+    def __init__(self, client_rol, gender, pathologies, nationality, phone, born,
                  observ_lunch, first_name, last_name, card_id):
         self.client_rol = client_rol
         self.gender = gender
@@ -116,8 +112,6 @@ class DataModel(ModelBase, db.Model):
         self.nationality = nationality
         self.phone = phone
         self.born = born
-        self.email = email
-        self.password = password
         self.observ_lunch = observ_lunch
         self.first_name = first_name
         self.last_name = last_name
@@ -183,6 +177,8 @@ class PathologiesModel(ModelBase, db.Model):
 
 class ClientSchema(ma.Schema):
     id_client = fields.Integer()
+    password = fields.String(required=True)
+    email = fields.String(required=True)
     data = fields.Integer()
     accompanist = fields.Integer()
     vehicle = fields.Integer()
@@ -197,12 +193,16 @@ class ClientModel(ModelBase, db.Model):
     data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
     accompanist = db.Column('accompanist', db.ForeignKey('accompanist.id_accompanist', ondelete='CASCADE'),
                             nullable=False)
+    password = db.Column('password', db.String(30), unique=False, nullable=False)
+    email = db.Column('email', db.String(40), unique=True, nullable=False)
     vehicle = db.Column('vehicle', db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
     rol = db.Column('rol', db.ForeignKey('rol.id_rol', ondelete='CASCADE'), nullable=False)
     hotel = db.Column('hotel', db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
 
-    def __init__(self, data, accompanist, vehicle, rol, hotel):
+    def __init__(self, data, accompanist, vehicle, rol, hotel, password, email):
         self.data = data
+        self.password = password
+        self.email = email
         self.accompanist = accompanist
         self.vehicle = vehicle
         self.rol = rol
@@ -311,7 +311,7 @@ class HotelModel(ModelBase, db.Model):
     name = db.Column('name', db.String(60), default='Unauthorized')
     lunch = db.Column('lunch', db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
     address = db.Column('address', db.String(60), default='Unauthorized')
-    quantity_rooms = db.Column('address', db.Integer, default='Unauthorized')
+    quantity_rooms = db.Column('quantity_rooms', db.Integer, default='Unauthorized')
 
     def __init__(self, rooms, lunch, address, quantity_rooms, name):
         self.rooms = rooms
