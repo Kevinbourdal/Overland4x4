@@ -131,3 +131,86 @@ class UserSession(BaseView):
 
         print('error', error)
         return response(400, msg="Error en backend")
+
+    def put(self):
+
+        """
+        Method to allow change password
+        """
+
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            if account is not None:
+                account.password = hashed_password(json_data['password'])
+            error = account.save()
+            if not error:
+                return response(200, data={'id': account.id})
+
+        return response(400, msg="Error en backend")
+
+    def patch(self):
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            if account is not None:
+                password = gen_token({'now': dt.now().second})[:16]
+                account.password = hashed_password(password)
+
+                # msg = message_recovery_password.format(password)
+                # send_email(json_data['email'], msg)
+
+                error = account.save()
+                if not error:
+                    return response(200, data={'id': account.id})
+
+        return response(400, msg="Error en backend")
+
+
+class UserView(BaseView):
+    """
+    Class user which allow register, login and logout an user
+    """
+
+    def __init__(self):
+        super(UserView, self).__init__()
+        self.user_schema = ClientSchema()
+
+    def get(self):
+        email = request.args.get('email', None)
+        if email is not None:
+            account = ClientModel.query.filter_by(email=email).first()
+            user = DataModel.query.filter_by(account_id=account.id).first()
+            if user is not None:
+                return response(200, data={'user': {'idData': user.idData,
+                                                    'idGenre': user.idGenre,
+                                                    'idClientRol': user.idClientRol,
+                                                    'idPathologies': user.idPathologies,
+                                                    'idNationality': user.idNationality,
+                                                    'firstname': user.firstname.title(),
+                                                    'lastname': user.lastname.title(),
+                                                    'password': user.password,
+                                                    'dni_type': user.dni_type,
+                                                    'dni': user.dni,
+                                                    'born': user.born,
+                                                    'city': user.city.title(),
+                                                    'address': user.address.title(),
+                                                    'phone': str(user.phone),
+                                                    'obFood': user.obFood,
+                                                    'email': account.email}})
+        return response(400)
+
+
