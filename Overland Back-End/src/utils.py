@@ -21,7 +21,7 @@ STATUS = {200: 'Success',
           500: 'Internal error'
           }
 
-JWT_SECRET_KEY = 'subastasenweb.key'
+JWT_SECRET_KEY = 'overland.key'
 JWT_ALGORITHM = 'HS256'
 JWT_NOISE = b'salt'
 MAIL_PASSWORD = 'Subastas2020!'
