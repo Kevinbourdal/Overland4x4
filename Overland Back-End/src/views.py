@@ -107,6 +107,7 @@ class UserSession(BaseView):
     def post(self):
         """
         Method to register a new user
+        crear un hash id para id data random
         """
         json_data, error = get_data(request)
         if self.exists_account(email=json_data['email']):
@@ -193,19 +194,19 @@ class DataView(BaseView):
         email = request.args.get('email', None)
         if email is not None:
             account = ClientModel.query.filter_by(email=email).first()
-            user = DataModel.query.filter_by(account_id=account.id).first()
+            user = DataModel.query.filter_by(id_data=account.data).first()
             if user is not None:
                 return response(200, data={'user': {'id_data': user.id_data,
-                                                    'card_id': user.card_id,
+                                                    'card_id': str(user.card_id),
                                                     'client_rol': user.client_rol,
-                                                    'gender': user.gender,
-                                                    'pathologies': user.pathologies,
-                                                    'nationality': user.nationality,
+                                                    'gender': user.gender.name,
+                                                    'pathologies': user.pathologies.name,
+                                                    'nationality': user.nationality.name,
                                                     'born': user.born,
                                                     'phone': str(user.phone),
                                                     'observ_lunch': user.observ_lunch,
-                                                    'first_name': user.first_name.title(),
-                                                    'lastname': user.lastname.title()}})
+                                                    'first_name': user.first_name,
+                                                    'lastname': user.lastname}})
         return response(400)
 
     def post(self):
@@ -218,7 +219,7 @@ class DataView(BaseView):
             if account is not None:
                 try:
                     user_data = self.user_schema.load({'id_data': json_data['id_data'],
-                                                       'card_id': json_data['idGenre'],
+                                                       'card_id': json_data['card_id'],
                                                        'client_rol': json_data['client_rol'],
                                                        'gender': json_data['gender'],
                                                        'pathologies': json_data['pathologies'],
@@ -232,7 +233,7 @@ class DataView(BaseView):
                     print('error', errors)
                     return response(400, str(errors))
                 new_user = DataModel(**user_data)
-                new_user.account_id = account.id
+                # new_user.id_ = account.id / hacer un hash apenas se registra para que sea id data
                 error = new_user.save()
                 if not error:
                     return response(200, data={'id': new_user.id})
@@ -290,16 +291,13 @@ class GenderView(BaseView):
 
     def __init__(self):
         super(GenderView, self).__init__()
-        self.user_schema = GenderSchema()
+        self.gender_schema = GenderSchema()
 
     def get(self):
-        email = request.args.get('email', None)
-        if email is not None:
-            account = ClientModel.query.filter_by(email=email).first()
-            user = GenderModel.query.filter_by(account_id=account.id).first()
-            if user is not None:
-                return response(200, data={'user': {'id_gender': user.id_gender,
-                                                    'name': user.name}})
+        gender = GenderModel.query
+        if gender is not None:
+            return response(200, data={'user': {'id_gender': gender.id_gender,
+                                                'name': gender.name}})
         return response(400)
 
     def post(self):
@@ -311,21 +309,18 @@ class GenderView(BaseView):
             account = ClientModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
-                    user_data = self.user_schema.load({'id_gender': json_data['id_gender'],
-                                                       'name': json_data['name']})
+                    gender_data = self.gender_schema.load({'name': json_data['name']})
 
                 except marshmallow.exceptions.ValidationError as errors:
                     print('error', errors)
                     return response(400, str(errors))
-                new_user = DataModel(**user_data)
-                new_user.account_id = account.id
-                error = new_user.save()
+                new_gender = GenderModel(**gender_data)
+                error = new_gender.save()
                 if not error:
-                    return response(200, data={'id': new_user.id})
+                    return response(200, data={'id': new_gender.id_gender})
                 print(error)
                 return error
             else:
-                print('user don\'t exists')
+                print('gender don\'t exists')
         print(error)
         return response(400, msg="Error en backend")
-
