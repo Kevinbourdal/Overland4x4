@@ -1,13 +1,13 @@
 import os
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
-DEBUG = False
+DEBUG = True
 WTF_CSRF_ENABLED = True
 PROD = False
 
 DB = {
     'driver': '{MySQL ODBC 8.0 Driver}',
-    'server': '172.17.0.2',
+    'server': 'localhost',
     'port': '3306',
     'database': 'Overland4x4',
     'username': 'root',
