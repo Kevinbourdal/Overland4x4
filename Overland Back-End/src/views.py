@@ -287,6 +287,45 @@ class DataView(BaseView):
         return response(400, msg="Error en backend")
 
 
+class NationalityView(BaseView):
+
+    def __init__(self):
+        super(NationalityView, self).__init__()
+        self.nationality_schema = NationalitySchema()
+
+    def get(self):
+        nationality = NationalityModel.query
+        if nationality is not None:
+            return response(200, data={'nationality': {'id_nationality': nationality.id_nationality,
+                                                       'name': nationality.name}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    nationality_data = self.nationality_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_nationality = NationalityModel(**nationality_data)
+                error = new_nationality.save()
+                if not error:
+                    return response(200, data={'id': new_nationality.id_nationality})
+                print(error)
+                return error
+            else:
+                print('Nationality don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
 class GenderView(BaseView):
 
     def __init__(self):
@@ -296,8 +335,8 @@ class GenderView(BaseView):
     def get(self):
         gender = GenderModel.query
         if gender is not None:
-            return response(200, data={'user': {'id_gender': gender.id_gender,
-                                                'name': gender.name}})
+            return response(200, data={'gender': {'id_gender': gender.id_gender,
+                                                  'name': gender.name}})
         return response(400)
 
     def post(self):
@@ -322,5 +361,302 @@ class GenderView(BaseView):
                 return error
             else:
                 print('gender don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class PathologiesView(BaseView):
+
+    def __init__(self):
+        super(PathologiesView, self).__init__()
+        self.pathologies_schema = PathologiesSchema()
+
+    def get(self):
+        pathologies = PathologiesModel.query
+        if pathologies is not None:
+            return response(200, data={'pathologies': {'id_pathologies': pathologies.id_pathologies,
+                                                       'name': pathologies.name}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    pathologies_data = self.pathologies_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_pathologies = PathologiesModel(**pathologies_data)
+                error = new_pathologies.save()
+                if not error:
+                    return response(200, data={'id': new_pathologies.id_pathologies})
+                print(error)
+                return error
+            else:
+                print('pathologies don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class AccompanistView(BaseView):
+
+    # Ateeenciionn!!! no estoy segura si para acompañante deberiamos hacer un put tambien
+
+    def __init__(self):
+        super(AccompanistView, self).__init__()
+        self.accompanist_schema = AccompanistSchema()
+
+    def get(self):
+        accompanist = AccompanistModel.query
+        if accompanist is not None:
+            return response(200, data={'accompanist': {'id_accompanist': accompanist.id_accompanist,
+                                                       'client': accompanist.id_client,
+                                                       'data': accompanist.id_data}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    accompanist_data = self.accompanist_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_accompanist = AccompanistModel(**accompanist_data)
+                error = new_accompanist.save()
+                if not error:
+                    return response(200, data={'id': new_accompanist.id_accompanist})
+                print(error)
+                return error
+            else:
+                print('accompanist don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class RoleView(BaseView):
+
+    def __init__(self):
+        super(RoleView, self).__init__()
+        self.role_schema = RoleSchema()
+
+    def get(self):
+        role = RoleModel.query
+        if role is not None:
+            return response(200, data={'role': {'id': role.id,
+                                                'role_name': role.role_name}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    role_data = self.role_schema.load({'role_name': json_data['role_name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_role = RoleModel(**role_data)
+                error = new_role.save()
+                if not error:
+                    return response(200, data={'id': new_role.id})
+                print(error)
+                return error
+            else:
+                print('role don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class LunchView(BaseView):
+
+    # May tenes que agregar put y delete lunch
+
+    def __init__(self):
+        super(LunchView, self).__init__()
+        self.lunch_schema = LunchSchema()
+
+    def get(self):
+        lunch = LunchModel.query
+        if lunch is not None:
+            return response(200, data={'lunch': {'id_lunch': lunch.id_lunch,
+                                                 'name': lunch.name,
+                                                 'price': lunch.price}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    lunch_data = self.lunch_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_lunch = LunchModel(**lunch_data)
+                error = new_lunch.save()
+                if not error:
+                    return response(200, data={'id': new_lunch.id})
+                print(error)
+                return error
+            else:
+                print('lunch don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class RoomsView(BaseView):
+
+    # May tenes que agregar put y delete romms
+
+    def __init__(self):
+        super(RoomsView, self).__init__()
+        self.rooms_schema = RoomsSchema()
+
+    def get(self):
+        rooms = RoomsModel.query
+        if rooms is not None:
+            return response(200, data={'rooms': {'id_rooms': rooms.id_rooms,
+                                                 'name': rooms.name,
+                                                 'beds': rooms.beds,
+                                                 'price': rooms.price}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    rooms_data = self.rooms_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_rooms = RoomsModel(**rooms_data)
+                error = new_rooms.save()
+                if not error:
+                    return response(200, data={'id': new_rooms.id})
+                print(error)
+                return error
+            else:
+                print('rooms don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class HotelView(BaseView):
+
+    # May tenes que agregar put y delete Hotel
+
+    def __init__(self):
+        super(HotelView, self).__init__()
+        self.hotel_schema = HotelSchema()
+
+    def get(self):
+        hotel = HotelModel.query
+        if hotel is not None:
+            return response(200, data={'hotel': {'id_hotel': hotel.id_hotel,
+                                                 'rooms': hotel.rooms,
+                                                 'name': hotel.name,
+                                                 'lunch': hotel.lunch,
+                                                 'address': hotel.address,
+                                                 'quantity_rooms': hotel.quantity_rooms}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    hotel_data = self.hotel_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_hotel = HotelModel(**hotel_data)
+                error = new_hotel.save()
+                if not error:
+                    return response(200, data={'id': new_hotel.id})
+                print(error)
+                return error
+            else:
+                print('hotel don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+
+class VehicleView(BaseView):
+
+    # May tenes que agregar put y delete vehicle
+
+    def __init__(self):
+        super(VehicleView, self).__init__()
+        self.vehicle_schema = VehicleSchema()
+
+    def get(self):
+        vehicle = VehicleModel.query
+        if vehicle is not None:
+            return response(200, data={'vehicle': {'id_vehicle': vehicle.id_vehicle,
+                                                   'name': vehicle.name,
+                                                   'mark': vehicle.mark,
+                                                   'oil': vehicle.oil,
+                                                   'model': vehicle.model,
+                                                   'patent': vehicle.patent,
+                                                   'color': vehicle.color,
+                                                   'observation': vehicle.observation}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    vehicle_data = self.vehicle_schema.load({'name': json_data['name']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_vehicle = VehicleModel(**vehicle_data)
+                error = new_vehicle.save()
+                if not error:
+                    return response(200, data={'id': new_vehicle.id})
+                print(error)
+                return error
+            else:
+                print('vehicle don\'t exists')
         print(error)
         return response(400, msg="Error en backend")
