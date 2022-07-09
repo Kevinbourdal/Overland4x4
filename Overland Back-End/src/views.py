@@ -406,8 +406,6 @@ class PathologiesView(BaseView):
 
 class AccompanistView(BaseView):
 
-    # Ateeenciionn!!! no estoy segura si para acompañante deberiamos hacer un put tambien
-
     def __init__(self):
         super(AccompanistView, self).__init__()
         self.accompanist_schema = AccompanistSchema()
@@ -444,6 +442,46 @@ class AccompanistView(BaseView):
                 print('accompanist don\'t exists')
         print(error)
         return response(400, msg="Error en backend")
+
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                accompanist = AccompanistModel.query.filter_by(account_id=account.id).first()
+                accompanist_data = self.accompanist_schema.load({'id_accompanist': json_data['id_accompanist'],
+                                                                 'client': json_data['client'],
+                                                                 'data': json_data['data']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            accompanist.id_accompanist = accompanist_data['id_accompanist']
+            accompanist.client = accompanist_data['client']
+            accompanist.data = accompanist_data['data']
+
+            error = accompanist.save()
+            if not error:
+                return response(200, data={'id': accompanist.id})
+
+        return response(400, msg="Error en backend")
+
+    def delete(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+
+        json_data, error = get_data(request)
+        if not error:
+            accompanist = AccompanistModel.query.filter_by(id=json_data['id_accompanist']).first()
+            if accompanist is not None:
+                result = accompanist.delete_()
+                if result is None:
+                    return response(200)
+        return response(400)
 
 
 class RoleView(BaseView):
@@ -487,8 +525,6 @@ class RoleView(BaseView):
 
 class LunchView(BaseView):
 
-    # May tenes que agregar put y delete lunch
-
     def __init__(self):
         super(LunchView, self).__init__()
         self.lunch_schema = LunchSchema()
@@ -526,10 +562,48 @@ class LunchView(BaseView):
         print(error)
         return response(400, msg="Error en backend")
 
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                lunch = LunchModel.query.filter_by(account_id=account.id).first()
+                lunch_data = self.lunch_schema.load({'id_lunch': json_data['id_lunch'],
+                                                     'name': json_data['name'],
+                                                     'price': json_data['price']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            lunch.id_lunch = lunch_data['id_lunch']
+            lunch.name = lunch_data['name']
+            lunch.price = lunch_data['price']
+
+            error = lunch.save()
+            if not error:
+                return response(200, data={'id': lunch.id})
+
+        return response(400, msg="Error en backend")
+
+    def delete(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+
+        json_data, error = get_data(request)
+        if not error:
+            lunch = LunchModel.query.filter_by(id=json_data['id_lunch']).first()
+            if lunch is not None:
+                result = lunch.delete_()
+                if result is None:
+                    return response(200)
+        return response(400)
+
 
 class RoomsView(BaseView):
-
-    # May tenes que agregar put y delete romms
 
     def __init__(self):
         super(RoomsView, self).__init__()
@@ -569,10 +643,50 @@ class RoomsView(BaseView):
         print(error)
         return response(400, msg="Error en backend")
 
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                rooms = RoomsModel.query.filter_by(account_id=account.id).first()
+                rooms_data = self.rooms_schema.load({'id_rooms': json_data['id_rooms'],
+                                                     'name': json_data['name'],
+                                                     'beds': json_data['beds'],
+                                                     'price': json_data['price']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            rooms.id_rooms = rooms_data['id_rooms']
+            rooms.name = rooms_data['name']
+            rooms.beds = rooms_data['beds']
+            rooms.price = rooms_data['price']
+
+            error = rooms.save()
+            if not error:
+                return response(200, data={'id': rooms.id})
+
+        return response(400, msg="Error en backend")
+
+    def delete(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+
+        json_data, error = get_data(request)
+        if not error:
+            rooms = RoomsModel.query.filter_by(id=json_data['id_rooms']).first()
+            if rooms is not None:
+                result = rooms.delete_()
+                if result is None:
+                    return response(200)
+        return response(400)
+
 
 class HotelView(BaseView):
-
-    # May tenes que agregar put y delete Hotel
 
     def __init__(self):
         super(HotelView, self).__init__()
@@ -614,10 +728,54 @@ class HotelView(BaseView):
         print(error)
         return response(400, msg="Error en backend")
 
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                hotel = HotelModel.query.filter_by(account_id=account.id).first()
+                hotel_data = self.hotel_schema.load({'id_hotel': json_data['id_hotel'],
+                                                     'rooms': json_data['rooms'],
+                                                     'lunch': json_data['lunch'],
+                                                     'name': json_data['name'],
+                                                     'address': json_data['address'],
+                                                     'quantity_rooms': json_data['quantity_rooms']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            hotel.id_hotel = hotel_data['id_hotel']
+            hotel.rooms = hotel_data['rooms']
+            hotel.name = hotel_data['name']
+            hotel.lunch = hotel_data['lunch']
+            hotel.address = hotel_data['address']
+            hotel.quantity_rooms = hotel_data['quantity_rooms ']
+
+            error = hotel.save()
+            if not error:
+                return response(200, data={'id': hotel.id})
+
+        return response(400, msg="Error en backend")
+
+    def delete(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+
+        json_data, error = get_data(request)
+        if not error:
+            hotel = HotelModel.query.filter_by(id=json_data['id_hotel']).first()
+            if hotel is not None:
+                result = hotel.delete_()
+                if result is None:
+                    return response(200)
+        return response(400)
+
 
 class VehicleView(BaseView):
-
-    # May tenes que agregar put y delete vehicle
 
     def __init__(self):
         super(VehicleView, self).__init__()
@@ -660,3 +818,53 @@ class VehicleView(BaseView):
                 print('vehicle don\'t exists')
         print(error)
         return response(400, msg="Error en backend")
+
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                vehicle = VehicleModel.query.filter_by(account_id=account.id).first()
+                vehicle_data = self.vehicle_schema.load({'id_vehicle': json_data['id_vehicle'],
+                                                         'name': json_data['name'],
+                                                         'mark': json_data['mark'],
+                                                         'oil': json_data['oil'],
+                                                         'model': json_data['model'],
+                                                         'patent': json_data['patent'],
+                                                         'color': json_data['color'],
+                                                         'observation': json_data['observation']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            vehicle.id_vehicle = vehicle_data['id_vehicle']
+            vehicle.name = vehicle_data['name']
+            vehicle.mark = vehicle_data['mark']
+            vehicle.oil = vehicle_data['oil']
+            vehicle.model = vehicle_data['model']
+            vehicle.patent = vehicle_data['patent']
+            vehicle.color = vehicle_data['color']
+            vehicle.observation = vehicle_data['observation']
+
+            error = vehicle.save()
+            if not error:
+                return response(200, data={'id': vehicle.id})
+
+        return response(400, msg="Error en backend")
+
+    def delete(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+
+        json_data, error = get_data(request)
+        if not error:
+            vehicle = VehicleModel.query.filter_by(id=json_data['id_vehicle']).first()
+            if vehicle is not None:
+                result = vehicle.delete_()
+                if result is None:
+                    return response(200)
+        return response(400)
