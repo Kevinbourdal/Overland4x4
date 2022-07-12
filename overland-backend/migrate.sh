@@ -1,20 +1,19 @@
 activate
-cd src/
+cd src/ || exit
 
-migrations_exists=$( ls | grep "migrations" | wc -l )
+# shellcheck disable=SC2126
+migrations_exists=$(ls || grep -c "migrations" | wc -l)
 
-if [ $migrations_exists == '1' ]
-then
-  if [ "$1" == 'reset' ]
-  then
+if [ "$migrations_exists" == '1' ]; then
+  if [ "$1" == "reset" ]; then
     echo "Delete migrations folder"
-    yes | rm -r migrations
-    python migrate.py db init
+    yes | while IFS= read -r migrations; do rm -- "$migrations"; done
+    python migrate.py db upgrade
   else
     echo "migrations folder already exist. Add reset argument to delete it and make a new."
   fi
 else
-  python migrate.py db init
+  python migrate.py db upgrade
 fi
 
 ## En caso de error como: Can't locate revision identified by '5c8b3d598949'
@@ -22,6 +21,7 @@ fi
 #python migrate.py db revision --rev-id 5c8b3d598949
 python migrate.py db migrate
 python migrate.py db upgrade
+
 
 cd ..
 deactivate

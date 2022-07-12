@@ -3,7 +3,7 @@ from flask_restful import Api
 from flask_socketio import SocketIO
 from flask_cors import CORS
 
-# from routes import urls
+from routes import urls
 from models import db
 
 
@@ -26,8 +26,8 @@ app_bp = Blueprint('api', __name__)
 api = Api(app_bp)
 
 # Add urls for api rest
-# for url in urls:
-#     api.add_resource(url['resource'], url['path'], endpoint=url['endpoint'])
+for url in urls:
+    api.add_resource(url['resource'], url['path'], endpoint=url['endpoint'])
 
 # Add access point to flask app
 app.register_blueprint(app_bp, url_prefix='/api')

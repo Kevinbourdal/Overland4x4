@@ -42,6 +42,20 @@ class ModelBase:
             return response(500, f'Data base error\n{ex}')
 
 
+class Permission(ModelBase, db.Model):
+    __tablename__ = 'permission'
+
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
+
+    def __init__(self, **kwargs):
+        for key in kwargs:
+            if hasattr(self, key):
+                setattr(self, key, kwargs[key])
+
+    def __repr__(self):
+        return f'permission {self.id}'
+
+
 class RoleSchema(ma.Schema):
     id = fields.Integer()
     role_name = fields.Integer()
