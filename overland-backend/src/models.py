@@ -348,7 +348,7 @@ class AccompanistModel(ModelBase, db.Model):
     __tablename__ = 'accompanist'
 
     id_accompanist = db.Column('id_hotel ', db.Integer, autoincrement=True, primary_key=True)
-    client = db.Column('client', db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
+    client = db.Column('client', db.ForeignKey('client.id_client', ondelete='CASCADE'))
     data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, client, data):

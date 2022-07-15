@@ -7,9 +7,9 @@ PROD = False
 
 DB = {
     'driver': '{MySQL ODBC 8.0 Driver}',
-    'server': '172.17.0.2',
+    'server': '127.0.0.1',
     'port': '3306',
-    'database': 'overland4x4',
+    'database': 'Overland4x4',
     'username': 'root',
     'password': 'pepeloquito!',
 }

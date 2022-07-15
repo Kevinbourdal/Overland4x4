@@ -18,7 +18,8 @@ depends_on = ${repr(depends_on)}
 
 def upgrade():
     ${upgrades if upgrades else "pass"}
-
+    sql = "grant all on all tables in schema public to simpleuser"
+    op.execute(sql)
 
 def downgrade():
     ${downgrades if downgrades else "pass"}

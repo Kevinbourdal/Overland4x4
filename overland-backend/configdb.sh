@@ -7,7 +7,8 @@
 docker pull mysql:8
 
 # Creamos un container que ejecutara mysql
-docker run -d --name=mysql-overland -e MYSQL_ROOT_PASSWORD=pepeloquito! -v $PWD/db:/docker-entrypoint-initdb.d/:ro mysql:8
+docker run -d -p 127.0.0.1:3306:3306 --name=mysql-overland -e MYSQL_ROOT_PASSWORD=pepeloquito! mysql:8
+
 
 ### Get mysql docker ip address
 docker inspect mysql-overland | grep "IPAddress"

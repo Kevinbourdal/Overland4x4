@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
 
@@ -15,8 +15,13 @@ services:
 
    db:
       image: mysql:8
-      environment:
-        MYSQL_PASSWORD: "pepeloquito!"
-        MYSQL_USER: "root"
       ports:
         - "3306:3306"
+      environment:
+        MYSQL_PASSWORD: pepeloquito!
+        MYSQL_USER: root
+      volumes:
+        - ./db:/docker-entrypoint-initdb.d
+        - ./mysql/data:/var/lib/mysql
+      restart: unless-stopped
+      container_name: mysql-overland
