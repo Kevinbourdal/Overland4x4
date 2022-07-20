@@ -13,8 +13,6 @@ from models import (
     DataModel,
     GenderSchema,
     GenderModel,
-    NationalitySchema,
-    NationalityModel,
     PathologiesSchema,
     PathologiesModel,
     ClientSchema,

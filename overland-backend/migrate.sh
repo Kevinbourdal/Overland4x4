@@ -1,4 +1,7 @@
-activate
+cd ../../
+. venv/bin/activate
+cd Overland4x4/overland-backend
+#activate
 cd src/ || exit
 
 # shellcheck disable=SC2126
@@ -23,6 +26,8 @@ python migrate.py db migrate
 python migrate.py db upgrade
 
 
-cd ..
-deactivate
+#cd ..
+#deactivate
+cd ../..
+#. venv/bin/desactivate
 echo "migration performed"

@@ -20,23 +20,23 @@ urls = [
     },
     {
         'resource': NationalityView,
-        'path': '/naionalidad',
-        'endpoint': 'naionalidad',
+        'path': '/nationality',
+        'endpoint': 'nationality',
     },
     {
         'resource': GenderView,
-        'path': '/generos',
-        'endpoint': 'generos',
+        'path': '/genders',
+        'endpoint': 'genders',
     },
     {
         'resource': PathologiesView,
-        'path': '/patologias',
-        'endpoint': 'patologias',
+        'path': '/ pathologies',
+        'endpoint': ' pathologies',
     },
     {
         'resource': AccompanistView,
-        'path': '/acompaniantes',
-        'endpoint': 'acompaniantes',
+        'path': '/accompanist',
+        'endpoint': 'accompanist',
     },
     {
         'resource': RoleView,
@@ -45,13 +45,13 @@ urls = [
     },
     {
         'resource': LunchView,
-        'path': '/comida',
-        'endpoint': 'comida',
+        'path': '/food',
+        'endpoint': 'food',
     },
     {
         'resource': RoomsView,
-        'path': '/habitaciones',
-        'endpoint': 'habitaciones',
+        'path': '/rooms',
+        'endpoint': 'rooms',
     },
     {
         'resource': HotelView,
@@ -60,8 +60,8 @@ urls = [
     },
     {
         'resource': VehicleView,
-        'path': '/mis_vehiculos',
-        'endpoint': 'mis_vehiculos',
+        'path': '/mis_vehicle',
+        'endpoint': 'mis_vehicle',
     },
 
 ]
