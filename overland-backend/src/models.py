@@ -64,11 +64,11 @@ class RoleSchema(ma.Schema):
 class RoleModel(ModelBase, db.Model):
     __tablename__ = 'role'
 
-    PERMISION = {'fullAdmin': 1,
-                 'mediumAdmin': 2,
-                 'beginerAdmin': 3,
-                 'clients': 4,
-                 }
+    PERMISSION = {'fullAdmin': 1,
+                  'mediumAdmin': 2,
+                  'beginerAdmin': 3,
+                  'clients': 4,
+                  }
 
     id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
     role_name = db.Column('role_name', db.String(25), default='Unauthorized')
@@ -106,12 +106,21 @@ class DataModel(ModelBase, db.Model):
 
     id_data = db.Column('id_data', db.Integer, autoincrement=True, primary_key=True)
     card_id = db.Column('card_id', db.Integer, unique=False, nullable=False, primary_key=True)
-    client_rol = db.Column('client_rol', db.ForeignKey('client.id', ondelete='CASCADE'), nullable=False)
-    gender = db.Column('gender', db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
-    pathologies = db.Column('pathologies', db.ForeignKey('pathologies.id_pathologies', ondelete='CASCADE'),
-                            nullable=False)
-    nationality = db.Column('nationality', db.ForeignKey('nationality.id_nationality', ondelete='CASCADE'),
-                            nullable=False)
+    client_rol_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
+    client_rol = db.relationship('ClientModel',
+                                 backref=db.backref('client_rol', lazy=True))
+    gender_id = db.Column(db.Integer, db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
+    gender = db.relationship('GenderModel',
+                             backref=db.backref('gender', lazy=True))
+    pathologies_id = db.Column('pathologies', db.Integer,
+                               db.ForeignKey('pathologies.id_pathologies', ondelete='CASCADE'),
+                               nullable=False)
+    pathologies = db.relationship('PathologiesModel',
+                                  backref=db.backref('pathologies', lazy=True))
+    nationality_id = db.Column(db.Integer, db.ForeignKey('nationality.id_nationality', ondelete='CASCADE'),
+                               nullable=False)
+    nationality = db.relationship('NationalityModel',
+                                  backref=db.backref('nationality', lazy=True))
     phone = db.Column('phone', db.Integer, unique=False, nullable=False)
     born = db.Column('born', db.Date, unique=False, nullable=False)
     observ_lunch = db.Column('observ_lunch', db.String(255), unique=False, nullable=False)
@@ -161,7 +170,7 @@ class NationalitySchema(ma.Schema):
 class NationalityModel(ModelBase, db.Model):
     __tablename__ = 'nationality'
 
-    id_nationality = db.Column('id_nationality ', db.Integer, autoincrement=True, primary_key=True)
+    id_nationality = db.Column('id_nationality', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(40), default='Unauthorized')
 
     def __init__(self, name):
@@ -179,7 +188,7 @@ class PathologiesSchema(ma.Schema):
 class PathologiesModel(ModelBase, db.Model):
     __tablename__ = 'pathologies'
 
-    id_pathologies = db.Column('id_pathologies ', db.Integer, autoincrement=True, primary_key=True)
+    id_pathologies = db.Column('id_pathologies', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(40), default='Unauthorized')
 
     def __init__(self, name):
@@ -203,15 +212,24 @@ class ClientSchema(ma.Schema):
 class ClientModel(ModelBase, db.Model):
     __tablename__ = 'client'
 
-    id_client = db.Column('id_client ', db.Integer, autoincrement=True, primary_key=True)
-    data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-    accompanist = db.Column('accompanist', db.ForeignKey('accompanist.id_accompanist', ondelete='CASCADE'),
-                            nullable=False)
+    id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
+    # data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    # data = db.relationship('DataModel',
+    #                        backref=db.backref('data', lazy=True))
+    accompanist_id = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
+    accompanist = db.relationship('AccompanistModel',
+                                  backref=db.backref('accompanist', lazy=True))
     password = db.Column('password', db.String(30), unique=False, nullable=False)
     email = db.Column('email', db.String(40), unique=True, nullable=False)
-    vehicle = db.Column('vehicle', db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
-    rol = db.Column('rol', db.ForeignKey('rol.id_rol', ondelete='CASCADE'), nullable=False)
-    hotel = db.Column('hotel', db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
+    vehicle = db.relationship('VehicleModel',
+                              backref=db.backref('vehicle', lazy=True))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'), nullable=False)
+    role = db.relationship('RoleModel',
+                           backref=db.backref('role', lazy=True))
+    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
+    hotel = db.relationship('HotelModel',
+                            backref=db.backref('hotel', lazy=True))
 
     def __init__(self, data, accompanist, vehicle, rol, hotel, password, email):
         self.data = data
@@ -240,14 +258,14 @@ class VehicleSchema(ma.Schema):
 class VehicleModel(ModelBase, db.Model):
     __tablename__ = 'vehicle'
 
-    id_vehicle = db.Column('id_vehicle ', db.Integer, autoincrement=True, primary_key=True)
+    id_vehicle = db.Column('id_vehicle', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(20), default='Unauthorized')
     mark = db.Column('mark', db.String(15), default='Unauthorized')
     oil = db.Column('oil', db.String(40), default='Unauthorized')
     model = db.Column('model', db.String(40), default='Unauthorized')
     patent = db.Column('patent', db.Integer, default='Unauthorized')
     color = db.Column('color', db.String(40), default='Unauthorized')
-    observation = db.Column('observation ', db.String(200), default='Unauthorized')
+    observation = db.Column('observation', db.String(200), default='Unauthorized')
 
     def __init__(self, name, mark, oil, model, patent, color,
                  observation):
@@ -273,7 +291,7 @@ class RoomsSchema(ma.Schema):
 class RoomsModel(ModelBase, db.Model):
     __tablename__ = 'rooms'
 
-    id_rooms = db.Column('id_rooms ', db.Integer, autoincrement=True, primary_key=True)
+    id_rooms = db.Column('id_rooms', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(40), default='Unauthorized')
     beds = db.Column('beds', db.Integer, default='Unauthorized')
     price = db.Column('price', db.Integer, default='Unauthorized')
@@ -296,7 +314,7 @@ class LunchSchema(ma.Schema):
 class LunchModel(ModelBase, db.Model):
     __tablename__ = 'lunch'
 
-    id_lunch = db.Column('id_lunch ', db.Integer, autoincrement=True, primary_key=True)
+    id_lunch = db.Column('id_lunch', db.Integer, autoincrement=True, primary_key=True)
     name = db.Column('name', db.String(40), default='Unauthorized')
     price = db.Column('price', db.Integer, default='Unauthorized')
 
@@ -320,10 +338,14 @@ class HotelSchema(ma.Schema):
 class HotelModel(ModelBase, db.Model):
     __tablename__ = 'hotel'
 
-    id_hotel = db.Column('id_hotel ', db.Integer, autoincrement=True, primary_key=True)
-    rooms = db.Column('rooms', db.ForeignKey('rooms.id_rooms', ondelete='CASCADE'), nullable=False)
+    id_hotel = db.Column('id_hotel', db.Integer, autoincrement=True, primary_key=True)
+    rooms_id = db.Column(db.Integer, db.ForeignKey('rooms.id_rooms', ondelete='CASCADE'), nullable=False)
+    rooms = db.relationship('RoomsModel',
+                            backref=db.backref('rooms', lazy=True))
     name = db.Column('name', db.String(60), default='Unauthorized')
-    lunch = db.Column('lunch', db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
+    lunch_id = db.Column(db.Integer, db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
+    lunch = db.relationship('LunchModel',
+                            backref=db.backref('lunch', lazy=True))
     address = db.Column('address', db.String(60), default='Unauthorized')
     quantity_rooms = db.Column('quantity_rooms', db.Integer, default='Unauthorized')
 
@@ -347,10 +369,14 @@ class AccompanistSchema(ma.Schema):
 class AccompanistModel(ModelBase, db.Model):
     __tablename__ = 'accompanist'
 
-    id_accompanist = db.Column('id_hotel ', db.Integer, autoincrement=True, primary_key=True)
-    client = db.Column('client', db.ForeignKey('client.id_client', ondelete='CASCADE'))
-    data = db.Column('data', db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-
+    id_accompanist = db.Column('id_accompanist', db.Integer, autoincrement=True, primary_key=True)
+#     client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'))
+#     client = db.relationship('ClientModel',
+#                              backref=db.backref('client', lazy=True))
+#     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+#     data = db.relationship('DataModel',
+#                            backref=db.backref('data', lazy=True))
+#
     def __init__(self, client, data):
         self.client = client
         self.data = data

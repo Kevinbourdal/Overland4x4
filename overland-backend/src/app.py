@@ -2,7 +2,7 @@ from flask import Flask, Blueprint
 from flask_restful import Api
 from flask_socketio import SocketIO
 from flask_cors import CORS
-
+from flask_sqlalchemy import SQLAlchemy
 from routes import urls
 from models import db
 
@@ -10,8 +10,9 @@ from models import db
 def index():
     return '<h1>API for 4x4 Overland </h1>'
 
+    # Create flask web application
 
-# Create flask web application
+
 app = Flask(__name__)
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -24,6 +25,7 @@ app.add_url_rule('/', 'index', index)  # simple greeting in /
 app_bp = Blueprint('api', __name__)
 # Create api rest
 api = Api(app_bp)
+
 
 # Add urls for api rest
 for url in urls:
