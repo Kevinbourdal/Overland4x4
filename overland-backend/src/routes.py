@@ -30,7 +30,7 @@ urls = [
     },
     {
         'resource': PathologiesView,
-        'path': '/ pathologies',
+        'path': '/pathologies',
         'endpoint': ' pathologies',
     },
     {
@@ -63,5 +63,4 @@ urls = [
         'path': '/mis_vehicle',
         'endpoint': 'mis_vehicle',
     },
-
 ]

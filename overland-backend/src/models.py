@@ -213,9 +213,9 @@ class ClientModel(ModelBase, db.Model):
     __tablename__ = 'client'
 
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
-    # data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-    # data = db.relationship('DataModel',
-    #                        backref=db.backref('data', lazy=True))
+    data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    data = db.relationship('DataModel',
+                           backref=db.backref('data', lazy=True))
     accompanist_id = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
     accompanist = db.relationship('AccompanistModel',
                                   backref=db.backref('accompanist', lazy=True))
@@ -370,13 +370,14 @@ class AccompanistModel(ModelBase, db.Model):
     __tablename__ = 'accompanist'
 
     id_accompanist = db.Column('id_accompanist', db.Integer, autoincrement=True, primary_key=True)
-#     client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'))
-#     client = db.relationship('ClientModel',
-#                              backref=db.backref('client', lazy=True))
-#     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-#     data = db.relationship('DataModel',
-#                            backref=db.backref('data', lazy=True))
-#
+
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'))
+    client = db.relationship('ClientModel',
+                             backref=db.backref('client', lazy=True))
+    data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    data = db.relationship('DataModel',
+                           backref=db.backref('data', lazy=True))
+
     def __init__(self, client, data):
         self.client = client
         self.data = data
