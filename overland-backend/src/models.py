@@ -383,3 +383,5 @@ class AccompanistModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'{self.client} accompanist'
+
+# puta la wea
