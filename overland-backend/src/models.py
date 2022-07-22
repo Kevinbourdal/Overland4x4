@@ -370,7 +370,6 @@ class AccompanistModel(ModelBase, db.Model):
     __tablename__ = 'accompanist'
 
     id_accompanist = db.Column('id_accompanist', db.Integer, autoincrement=True, primary_key=True)
-
     client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'))
     client = db.relationship('ClientModel',
                              backref=db.backref('client', lazy=True))
@@ -384,3 +383,5 @@ class AccompanistModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'{self.client} accompanist'
+
+# puta la wea
