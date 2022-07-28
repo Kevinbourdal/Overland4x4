@@ -4,18 +4,18 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
-export default function TabOneScreen({
+export default function DriverScreen({
   navigation,
-}: RootTabScreenProps<"TabOne">) {
+}: RootTabScreenProps<"Driver">) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>'Los hermanos bourdal'</Text>
+      <Text style={styles.title}>I'am Driver</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/kevin/TabOneScreen.tsx" />
+      {/* <EditScreenInfo path="/kevin/TabOneScreen.tsx" /> */}
     </View>
   );
 }
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 50,
     fontWeight: "bold",
   },
   separator: {

@@ -3,12 +3,15 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 
-export default function NotFoundScreen({ navigation }: RootStackScreenProps<'NotFound'>) {
+export default function LandingPageScreen({ navigation }: RootStackScreenProps<'LandingPage'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+      <Text style={styles.title}>Registrarme como:</Text>
       <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
-        <Text style={styles.linkText}>Go to home screen!</Text>
+        <Text>Passeger</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
+        <Text>Driver</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,4 +36,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+
 });
