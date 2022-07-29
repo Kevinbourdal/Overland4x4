@@ -2,17 +2,21 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, Button, View, Text } from "react-native";
 // import { Text, View} from "../components/Themed";
 import { Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ButtonBlueOutline from "../components/ButtonBlueOutline";
 
 export default function LandingPage(){
 return(
-    <View style={{flex:1, backgroundColor: '#414345'}}>
-        <View>
+    <SafeAreaView style={{flex:1, backgroundColor: '#414345'}}>
+        <View style = {style.container}>
             <Image 
             style = {{height: 200, position:'absolute', zIndex: -1, width:'100%' }}
             source = {require('../assets/images/portada.jpg')}/>
-            <Image style = {style.logo}
-            source = {require('../assets/images/logoFinal.png')}/>
-            <Text style = {style.title}>4x4 Overland</Text>
+            <View style={style.logoContainer}>              
+                <Image style = {style.logo}
+                source = {require('../assets/images/logoFinal.png')}/>
+                <Text style = {style.title}>4x4 Overland</Text>
+            </View>
         </View>
             <View style = {style.logout}>
                 <Button title="LogOut" color={'#414345'} />
@@ -20,16 +24,14 @@ return(
             <View style = {style.adventur} >
                 <Text style = {style.title}>Viajes de Aventura</Text>
             </View>
-        <View style={style.register}>
+            <View style={style.register}>
             <Text style={style.registeTitle}>Registrarme como:</Text>
-            <Button title="Passeger" color={'#414345'}/>
-            <Button title="Driver" color={'#414345'}/>
-        <View style={style.button}>
-        <View style={style.button}>
         </View>
-        </View>    
-        </View>
-    </View>
+                    <ButtonBlueOutline text="Driver" />
+
+                    <ButtonBlueOutline text="Passeger" />
+    
+    </SafeAreaView>
 
 )
 }
@@ -38,38 +40,24 @@ return(
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        alingnItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '414345',
         flexDirection:"row",                            
+        backgroundColor: '414345',
+    },
+    logoContainer:{
+        flexDirection: "row",
     },
     adventur:{
-        flex: 1,
         alignSelf: 'flex-end',
-        // justifyContent: 'center',
         backgroundColor: '414345',
-        flexDirection:"row",   
+        top:-175,
     },
-
     title:{
-        flex:1,
         fontSize: 50,
         fontFamily: 'Staatliches',
-        left: 50,
-        height: 30,
-        flexDirection:"row",
-        alignItems:'center',
-        textAlign:'center', 
-        alignSelf:'center',
         color: '#FFFFFF',
-        possition: 'absolute',
-        width: 458,
-        top: 90,
-        
+        left: 50,
     }, 
-       
     logo:{
-        position: 'absolute',
         width: 125,
         height: 125,
         left: 20,
@@ -95,13 +83,10 @@ const style = StyleSheet.create({
         fontSize: 28,
         fontFamily:'Bangers',
         fontStyle:'normal',
-        // display:"flex",
-        // alignItems: 'center',
-        // textAlign: 'center',
-        // position:"absolute",
-        flex:2,
+
     },
     registeTitle:{
+        flex:1,
         color:'#FFFFFF',
         fontSize: 40,
         fontFamily:'Bangers',
@@ -109,7 +94,8 @@ const style = StyleSheet.create({
         display:"flex",
         alignItems: 'center',
         textAlign: 'center',
-        position:"absolute"
+        position:"absolute",
+        top: -100,
 
     },
     logout:{
