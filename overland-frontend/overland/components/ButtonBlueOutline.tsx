@@ -20,7 +20,6 @@ const style = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 4,
     borderColor: "#0EAEE0",
-    justifyContent: "space-between",
   },
   text: {
     textAlign: "center",
