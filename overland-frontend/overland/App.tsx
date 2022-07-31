@@ -5,6 +5,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import LandingPage from './Landing/LandingPage';
 import Navigation from './navigation';
+import DriverNavigation from './navigation/DriverNavigation';
 
 
 export default function App() {
@@ -16,8 +17,9 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        {/* <Navigation colorScheme={colorScheme} /> */}
-        <LandingPage />
+        <Navigation colorScheme={colorScheme} />
+        {/* <LandingPage /> */}
+        {/* <DriverNavigation /> */}
         <StatusBar />
       </SafeAreaProvider>
     );

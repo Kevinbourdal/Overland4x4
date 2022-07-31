@@ -2,9 +2,11 @@ import React from "react";
 import {  StyleSheet, View, Text } from "react-native";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Link } from "react-router-native";
 import Banner from "../components/Banner";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import Navigation from "../navigation";
+import DriverNavigation from "../navigation/DriverNavigation";
 
 
 
@@ -19,7 +21,7 @@ export default function LandingPage() {
         <Text style={style.registeTitle}>Registrarme como:</Text>
       </View>
         <View style={style.button}>
-            <ButtonBlueOutline text="Driver"/>
+            <ButtonBlueOutline text="Driver" onPress={() => (<DriverNavigation />)}/>
             <ButtonBlueOutline text="Passeger" />
         </View>
 
