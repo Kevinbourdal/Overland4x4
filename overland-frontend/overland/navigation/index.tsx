@@ -21,6 +21,7 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import PassengerScreen from "../screens/PassengerScreen";
 import DriverScreen from "../screens/DriverScreen";
+import LandingPage from "../Landing/LandingPage";
 
 
 
@@ -50,7 +51,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-        component={BottomTabNavigator}
+        component={LandingPage}
         options={{ headerShown: false }}
       />
       <Stack.Screen
