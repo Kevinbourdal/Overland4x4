@@ -1,25 +1,17 @@
 import React from "react";
-<<<<<<< Updated upstream
-import {  StyleSheet, View, Text } from "react-native";
-=======
-import { TouchableOpacity, StyleSheet, Button, View, Text } from "react-native";
+import { StyleSheet, Button, View, Text } from "react-native";
 // import { Text, View} from "../components/Themed";
 import { Image } from "react-native";
->>>>>>> Stashed changes
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
-<<<<<<< Updated upstream
-
-
-export default function LandingPage() {
-    
-=======
 import { RootTabScreenProps } from "../types";
 
 export default function LandingPage({
   navigation,
 }: RootTabScreenProps<"route">) {
->>>>>>> Stashed changes
+  function handlesubmit() {
+    navigation.navigate("DriverScreen");
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#414345" }}>
       <View style={style.container}>
@@ -49,22 +41,10 @@ export default function LandingPage({
       <View style={style.register}>
         <Text style={style.registeTitle}>Registrarme como:</Text>
       </View>
-<<<<<<< Updated upstream
-        <View style={style.button}>
-            {/* <Link to='/driver'>
-              <ButtonBlueOutline text="Driver"/> 
-            </Link> */}
-            <ButtonBlueOutline text="Passeger" />
-        </View>
-=======
->>>>>>> Stashed changes
-
-      <ButtonBlueOutline
-        text="Driver"
-        onPress={navigation.navigate("DriverScreen")}
-      />
-
-      <ButtonBlueOutline text="Passeger" />
+      <View style={style.button}>
+        <ButtonBlueOutline text="Passeger" />
+      </View>
+      <ButtonBlueOutline text="Driver" onPress={() => handlesubmit()} />
     </SafeAreaView>
   );
 }

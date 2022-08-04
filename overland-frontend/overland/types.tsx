@@ -32,8 +32,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   LandingPage: undefined;
-  Driver: undefined;
   Passenger: undefined;
+  DriverScreen: undefined;
   route: undefined;
 };
 

@@ -17,7 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Driver: {
             screens: {
-              DriverScreen: "driver",
+              DriverScreen: "Driver",
             },
           },
           Passenger: {
@@ -27,7 +27,6 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      LandingPage: "*",
     },
   },
 };

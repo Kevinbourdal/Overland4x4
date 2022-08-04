@@ -47,18 +47,15 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Root"
+        name="LandingPage"
         component={LandingPage}
-        options={{ headerShown: false }}
+        options={{ title: "LandingPage", headerShown: false }}
       />
       <Stack.Screen
-        name="LandingPage"
-        component={NotFoundScreen}
-        options={{ title: "LandingPage" }}
+        name="DriverSrcreen"
+        component={DriverScreen}
+        options={{ title: "DriveScreen", headerShown: false }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }

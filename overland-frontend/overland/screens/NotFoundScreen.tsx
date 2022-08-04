@@ -1,16 +1,18 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from "react-native";
 
-import { Text, View } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
+import { Text, View } from "../components/Themed";
+import { RootStackScreenProps } from "../types";
 
-export default function LandingPageScreen({ navigation }: RootStackScreenProps<'LandingPage'>) {
+export default function LandingPageScreen({
+  navigation,
+}: RootStackScreenProps<"LandingPage">) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrarme como:</Text>
-      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
+      <TouchableOpacity style={styles.link}>
         <Text>Passeger</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
+      <TouchableOpacity style={styles.link}>
         <Text>Driver</Text>
       </TouchableOpacity>
     </View>
@@ -20,13 +22,13 @@ export default function LandingPageScreen({ navigation }: RootStackScreenProps<'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   link: {
     marginTop: 15,
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 14,
-    color: '#2e78b7',
+    color: "#2e78b7",
   },
-
 });
