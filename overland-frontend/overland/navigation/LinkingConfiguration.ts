@@ -4,31 +4,30 @@
  * https://reactnavigation.org/docs/configuring-links
  */
 
-import { LinkingOptions } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
+import { LinkingOptions } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 
-import { RootStackParamList } from '../types';
+import { RootStackParamList } from "../types";
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: [Linking.makeUrl("/")],
   config: {
     screens: {
       Root: {
         screens: {
           Driver: {
             screens: {
-              DriverScreen: 'driver',
+              DriverScreen: "driver",
             },
           },
           Passenger: {
             screens: {
-              PassengerScreen: 'passenger',
+              PassengerScreen: "passenger",
             },
           },
         },
       },
-      Modal: 'modal',
-      LandingPage: '*',
+      LandingPage: "*",
     },
   },
 };
