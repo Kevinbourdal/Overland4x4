@@ -3,124 +3,55 @@ import { StyleSheet, Button, View, Text } from "react-native";
 // import { Text, View} from "../components/Themed";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Banner from "../components/Banner";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import { RootTabScreenProps } from "../types";
 
 export default function LandingPage({
   navigation,
 }: RootTabScreenProps<"route">) {
-  function handlesubmit() {
-    navigation.navigate("DriverScreen");
+
+  function handleSubmitDriver() {
+    navigation.navigate("DriverNavigation");
+  }
+
+  function handleSubmitPasseger(){
+    navigation.navigate("PassengerNavigation")
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#414345" }}>
-      <View style={style.container}>
-        <Image
-          style={{
-            height: 200,
-            position: "absolute",
-            zIndex: -1,
-            width: "100%",
-          }}
-          source={require("../assets/images/portada.jpg")}
-        />
-        <View style={style.logoContainer}>
-          <Image
-            style={style.logo}
-            source={require("../assets/images/logoFinal.png")}
-          />
-          <Text style={style.title}>4x4 Overland</Text>
-        </View>
-      </View>
-      <View style={style.logout}>
-        <Button title="LogOut" color={"#414345"} />
-      </View>
-      <View style={style.adventur}>
-        <Text style={style.title}>Viajes de Aventura</Text>
-      </View>
+        <Banner />
       <View style={style.register}>
         <Text style={style.registeTitle}>Registrarme como:</Text>
       </View>
       <View style={style.button}>
-        <ButtonBlueOutline text="Passeger" />
+        <ButtonBlueOutline text="Driver" onPress={() => handleSubmitDriver()} />
+        <ButtonBlueOutline text="Passenger" onPress={() => handleSubmitPasseger()}/>
       </View>
-      <ButtonBlueOutline text="Driver" onPress={() => handlesubmit()} />
     </SafeAreaView>
   );
 }
 
 const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "414345",
-  },
-  logoContainer: {
-    flexDirection: "row",
-  },
-  adventur: {
-    alignSelf: "flex-end",
-    backgroundColor: "414345",
-    top: -175,
-  },
-  title: {
-    fontSize: 50,
-    fontFamily: "Staatliches",
-    color: "#FFFFFF",
-    left: 50,
-  },
-  logo: {
-    width: 125,
-    height: 125,
-    left: 20,
-    top: 20,
-    zIndex: 1,
-  },
+  
   register: {
-    position: "relative",
-    fontSize: 30,
-    fontFamily: "Bangers",
-    backgroundColor: "#414345",
     flex: 1,
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     flexDirection: "row",
+    top: "20%"
   },
   button: {
     alignContent: "stretch",
     flexDirection: "row",
-    justifyContent: "space-between",
-    borderColor: "#0EAEE0",
-    color: "#FFFFFF",
-    fontSize: 28,
-    fontFamily: "Bangers",
-    fontStyle: "normal",
+    justifyContent: "space-evenly",
+    top:"-30%"
   },
   registeTitle: {
-    flex: 1,
     color: "#FFFFFF",
     fontSize: 40,
     fontFamily: "Bangers",
     fontStyle: "normal",
-    display: "flex",
-    alignItems: "center",
     textAlign: "center",
-    position: "absolute",
-    top: -100,
-  },
-  logout: {
-    flexDirection: "row",
-    borderColor: "#0EAEE0",
-    color: "#FFFFFF",
-    fontSize: 28,
-    fontFamily: "Bangers",
-    fontStyle: "normal",
-    display: "flex",
-    alignItems: "flex-end",
-    alignSelf: "flex-end",
-    position: "absolute",
-    flex: 2,
-  },
-  prueb: {
-    justifyContent: "space-between",
+    // top: -200,
   },
 });

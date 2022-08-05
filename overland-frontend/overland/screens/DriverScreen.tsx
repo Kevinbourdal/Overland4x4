@@ -3,9 +3,7 @@ import { StyleSheet } from "react-native";
 import { RootTabScreenProps } from "../types";
 import Banner from "../components/Banner";
 
-export default function DriverScreen({
-  navigation,
-}: RootTabScreenProps<"DriverScreen">) {
+export default function DriverScreen(){
   return (
     <view>
       <Banner />

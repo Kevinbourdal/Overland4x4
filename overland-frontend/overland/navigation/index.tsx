@@ -1,5 +1,3 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -19,12 +17,10 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import PassengerScreen from "../screens/PassengerScreen";
-import DriverScreen from "../screens/DriverScreen";
-
-import DriverNavigation from "./DriverNavigation";
 import LandingPage from "../Landing/LandingPage";
-import { createStackNavigator } from "@react-navigation/stack";
+import DriverNavigation from "./DriverNavigation";
+import PassengerNavigation from "./PassengerNavigation";
+
 
 export default function Navigation({
   colorScheme,
@@ -52,9 +48,14 @@ function RootNavigator() {
         options={{ title: "LandingPage", headerShown: false }}
       />
       <Stack.Screen
-        name="DriverSrcreen"
-        component={DriverScreen}
-        options={{ title: "DriveScreen", headerShown: false }}
+        name="DriverNavigation"
+        component={DriverNavigation}
+        options={{ title: "DriveNavigation", headerShown: false }}
+      />
+      <Stack.Screen
+        name="PassegerNavigation"
+        component={PassengerNavigation}
+        options={{ title: "PassegerNavigation", headerShown: false }}
       />
     </Stack.Navigator>
   );
