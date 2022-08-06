@@ -6,8 +6,7 @@ import { View, Text } from "../components/Themed";
 export default function PassengerNavigation() {
   return (
     <View>
-        <Banner />;
-            <Text>Hola KEikin son Passeger</Text>
+      <Text>Hola KEikin son Passeger</Text>
     </View>
-  )
+  );
 }

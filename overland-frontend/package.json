@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@react-navigation/stack": "^6.2.2",
+    "formik": "^2.2.9",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.18.7"
   },

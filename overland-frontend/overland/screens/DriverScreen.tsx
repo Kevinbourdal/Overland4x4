@@ -3,10 +3,9 @@ import { StyleSheet } from "react-native";
 import { RootTabScreenProps } from "../types";
 import Banner from "../components/Banner";
 
-export default function DriverScreen(){
+export default function DriverScreen() {
   return (
     <view>
-      <Banner />
       <text>lalalal</text>
     </view>
   );

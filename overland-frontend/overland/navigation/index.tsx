@@ -20,7 +20,8 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import LandingPage from "../Landing/LandingPage";
 import DriverNavigation from "./DriverNavigation";
 import PassengerNavigation from "./PassengerNavigation";
-
+import Banner from "../components/Banner";
+import RegisterNavigation from "./RegisterNavigation";
 
 export default function Navigation({
   colorScheme,
@@ -32,6 +33,7 @@ export default function Navigation({
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
+      <Banner />
       <RootNavigator />
     </NavigationContainer>
   );
@@ -56,6 +58,11 @@ function RootNavigator() {
         name="PassegerNavigation"
         component={PassengerNavigation}
         options={{ title: "PassegerNavigation", headerShown: false }}
+      />
+      <Stack.Screen
+        name="RegisterNavigation"
+        component={RegisterNavigation}
+        options={{ title: "RegisterNavigation", headerShown: false }}
       />
     </Stack.Navigator>
   );
