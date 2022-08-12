@@ -18,7 +18,6 @@ export default function Main() {
       <View style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Navigation colorScheme={colorScheme} />} />
-          <Route path="/driver" element={<DriverNavigation />} />
         </Routes>
       </View>
     );
