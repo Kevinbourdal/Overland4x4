@@ -30,9 +30,9 @@ const linking: LinkingOptions<RootStackParamList> = {
               MiPerfilScreeen:'MiPerfil'
             },
           },
-          Passenger: {
+          PassengerNavigation: {
             screens: {
-              PassengerScreen: "passenger",
+              PassengerNavigation: "PassengerNavigation",
             },
           },
         },

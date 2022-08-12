@@ -18,9 +18,9 @@ const style = StyleSheet.create({
         width: "20%",
         overflow: "hidden",
         marginVertical: 10,
-        borderRadius: 10,
-        borderWidth: 4,
-        borderColor: "#FF4B2B",
+        // borderRadius: 10,
+        // borderWidth: 4,
+        // borderColor: "#FF4B2B",
         zIndex:1,
         flexDirection:"row"
     },
