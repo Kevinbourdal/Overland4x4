@@ -1,15 +1,13 @@
 import React from "react";
-import { StyleSheet, Button, View, Text } from "react-native";
-// import { Text, View} from "../components/Themed";
-import { Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Banner from "../components/Banner";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import { RootTabScreenProps } from "../types";
 
 export default function LandingPage({
   navigation,
 }: RootTabScreenProps<"route">) {
+
   function handleSubmitDriver() {
     navigation.navigate("DriverNavigation");
   }
@@ -38,13 +36,13 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     flexDirection: "row",
-    top: "20%",
+    top: "-40%",
   },
   button: {
     alignContent: "stretch",
     flexDirection: "row",
     justifyContent: "space-evenly",
-    top: "-30%",
+    top: "-50%",
   },
   registeTitle: {
     color: "#FFFFFF",

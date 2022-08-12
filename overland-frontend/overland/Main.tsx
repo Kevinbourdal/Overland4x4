@@ -5,6 +5,7 @@ import Navigation from "./navigation";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Banner from "./components/Banner";
+import DriverNavigation from "./navigation/DriverNavigation";
 
 export default function Main() {
   const isLoadingComplete = useCachedResources();
@@ -16,10 +17,8 @@ export default function Main() {
     return (
       <View style={{ flex: 1 }}>
         <Routes>
-          <Route path="/" element={<Navigation colorScheme={colorScheme} />}>
-            {/* <LandingPage /> */}
-            {/* <StatusBar /> */}
-          </Route>
+          <Route path="/" element={<Navigation colorScheme={colorScheme} />} />
+          <Route path="/driver" element={<DriverNavigation />} />
         </Routes>
       </View>
     );

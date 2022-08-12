@@ -20,9 +20,14 @@ const linking: LinkingOptions<RootStackParamList> = {
               LandingPage: "LandingPage",
             },
           },
-          Driver:{
+          DriverNavigation:{
             screens:{
-              DriverScreen:'Driver'
+              DriverNavigation:'DriverNavigation'
+            },
+          },
+          MiPerfil:{
+            screens:{
+              MiPerfilScreeen:'MiPerfil'
             },
           },
           Passenger: {
