@@ -9,4 +9,6 @@ marshmallow==3.16.0
 mysqlclient==2.1.1
 marshmallow_sqlalchemy==0.28.0
 PyJWT==2.4.0
-bcrypt
+bcrypt~=3.2.2
+SQLAlchemy~=1.4.40
+alembic~=1.8.1

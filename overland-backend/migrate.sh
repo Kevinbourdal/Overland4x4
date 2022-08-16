@@ -1,5 +1,5 @@
 cd ../../
-. venv/bin/activate
+source ./bin/activate
 cd Overland4x4/overland-backend
 #activate
 cd src/ || exit
