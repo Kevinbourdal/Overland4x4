@@ -9,10 +9,16 @@ from views import (
     RoomsView,
     HotelView,
     VehicleView,
+    UserSession,
 )
 
 # list with each access point in dict format
 urls = [
+    {
+        'resource': UserSession,
+        'path': '/register',
+        'endpoint': 'register',
+    },
     {
         'resource': DataView,
         'path': '/mi_perfil',
