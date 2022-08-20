@@ -1,6 +1,6 @@
-cd ../../
-source ./bin/activate
-cd Overland4x4/overland-backend
+#cd ../../
+source venv/bin/activate
+#cd Overland4x4/overland-backend
 #activate
 cd src/ || exit
 
@@ -16,7 +16,7 @@ if [ "$migrations_exists" == '1' ]; then
     echo "migrations folder already exist. Add reset argument to delete it and make a new."
   fi
 else
-  python migrate.py db upgrade
+  python migrate.py db init
 fi
 
 ## En caso de error como: Can't locate revision identified by '5c8b3d598949'
@@ -26,8 +26,8 @@ python migrate.py db migrate
 python migrate.py db upgrade
 
 
-#cd ..
+cd ..
 #deactivate
-cd ../..
-#. venv/bin/desactivate
+#cd ../..
+source venv/bin/desactivate
 echo "migration performed"

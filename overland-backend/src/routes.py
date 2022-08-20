@@ -1,6 +1,5 @@
 from views import (
     DataView,
-    NationalityView,
     GenderView,
     PathologiesView,
     AccompanistView,
@@ -9,25 +8,20 @@ from views import (
     RoomsView,
     HotelView,
     VehicleView,
-    UserSession,
+    ClientView,
 )
 
 # list with each access point in dict format
 urls = [
     {
-        'resource': UserSession,
-        'path': '/register',
-        'endpoint': 'register',
+        'resource': ClientView,
+        'path': '/client',
+        'endpoint': 'client',
     },
     {
         'resource': DataView,
         'path': '/mi_perfil',
         'endpoint': 'mi_perfil',
-    },
-    {
-        'resource': NationalityView,
-        'path': '/nationality',
-        'endpoint': 'nationality',
     },
     {
         'resource': GenderView,

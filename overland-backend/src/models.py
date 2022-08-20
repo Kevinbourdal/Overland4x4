@@ -108,7 +108,7 @@ class DataModel(ModelBase, db.Model):
     card_id = db.Column('card_id', db.Integer, unique=False, nullable=False, primary_key=True)
     client_rol_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
     client_rol = db.relationship('ClientModel',
-                                 backref=db.backref('client_rol', lazy=True))
+                                 backref=db.backref(foreign_key=['id_client'], lazy=True))
     gender_id = db.Column(db.Integer, db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
     gender = db.relationship('GenderModel',
                              backref=db.backref('gender', lazy=True))
