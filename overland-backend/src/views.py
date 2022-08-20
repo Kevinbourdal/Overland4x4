@@ -285,17 +285,29 @@ class DataView(BaseView):
         return response(400, msg="Error en backend")
 
 
-class NationalityView(BaseView):
+class ClientView(BaseView):
+    """
+    Class user which allow register, login and logout an user
+    """
 
     def __init__(self):
-        super(NationalityView, self).__init__()
-        self.nationality_schema = NationalitySchema()
+        super(ClientView, self).__init__()
+        self.user_schema = ClientSchema()
 
     def get(self):
-        nationality = NationalityModel.query
-        if nationality is not None:
-            return response(200, data={'nationality': {'id_nationality': nationality.id_nationality,
-                                                       'name': nationality.name}})
+        email = request.args.get('email', None)
+        if email is not None:
+            account = ClientModel.query.filter_by(email=email).first()
+            client = DataModel.query.filter_by(id_data=account.data).first()
+            if client is not None:
+                return response(200, data={'client': {'id_client': client.id_client,
+                                                      'data_id': client.data_id,
+                                                      'accompanist': client.accompanist,
+                                                      'password': client.password,
+                                                      'email': client.email,
+                                                      'vehicle': client.vehicle,
+                                                      'role': client.role,
+                                                      'hotel': client.hotel}})
         return response(400)
 
     def post(self):
@@ -307,20 +319,63 @@ class NationalityView(BaseView):
             account = ClientModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
-                    nationality_data = self.nationality_schema.load({'name': json_data['name']})
-
+                    client_data = self.client_schema.load({'id_client': json_data['id_client'],
+                                                           'data_id': json_data['data_id'],
+                                                           'accompanist': json_data['accompanist'],
+                                                           'password': json_data['password'],
+                                                           'email': json_data['email'],
+                                                           'vehicle': json_data['vehicle'],
+                                                           'role': json_data['role'],
+                                                           'hotel': json_data['hotel']})
                 except marshmallow.exceptions.ValidationError as errors:
                     print('error', errors)
                     return response(400, str(errors))
-                new_nationality = NationalityModel(**nationality_data)
-                error = new_nationality.save()
+                new_client = ClientModel(**client_data)
+                # new_user.id_ = account.id / hacer un hash apenas se registra para que sea id data
+                error = new_client.save()
                 if not error:
-                    return response(200, data={'id': new_nationality.id_nationality})
+                    return response(200, data={'id': new_client.id})
                 print(error)
                 return error
             else:
-                print('Nationality don\'t exists')
+                print('client don\'t exists')
         print(error)
+        return response(400, msg="Error en backend")
+
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                client = DataModel.query.filter_by(account_id=account.id).first()
+                client_data = self.user_schema.load({'id_client': json_data['id_client'],
+                                                     'data_id': json_data['data_id'],
+                                                     'accompanist': json_data['accompanist'],
+                                                     'password': json_data['password'],
+                                                     'email': json_data['email'],
+                                                     'vehicle': json_data['vehicle'],
+                                                     'role': json_data['role'],
+                                                     'hotel': json_data['hotel']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            client.id_data = client_data['id_client']
+            client.card_id = client_data['data_id']
+            client.client_rol = client_data['accompanist']
+            client.gender = client_data['password']
+            client.pathologies = client_data['email']
+            client.nationality = client_data['vehicle']
+            client.phone = client_data['role']
+            client.born = client_data['hotel']
+
+            error = client.save()
+            if not error:
+                return response(200, data={'id': client.id})
+
         return response(400, msg="Error en backend")
 
 
