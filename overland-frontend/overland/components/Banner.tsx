@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native";
 import ButtonBlueOutline from "./ButtonBlueOutline";
+import Dimensions from "../constants/Dimensions";
 
 export default function Banner() {
   return (
@@ -8,10 +9,10 @@ export default function Banner() {
       <View style={style.container}>
         <Image
           style={{
-            height: 200,
+            height: Dimensions.height * 0.3,
             position: "absolute",
             zIndex: -1,
-            width: "100%",
+            width: Dimensions.width * 1,
           }}
           source={require("../assets/images/portada.jpg")}
         />
@@ -38,37 +39,33 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
+    width: Dimensions.width * 0.1,
     // backgroundColor: "414345",
   },
   containerTitle: {
-    left: "4%",
-    top: "20%",
+    left: Dimensions.width * 0.02,
+    top: Dimensions.height * 0.03,
   },
   logo: {
-    width: 125,
-    height: 125,
-    left: 20,
-    top: 20,
+    width: Dimensions.width * 0.1,
+    height: Dimensions.height * 0.2,
+    left: Dimensions.height * 0.02,
+    top: Dimensions.height * 0.04,
     zIndex: 1,
   },
   title: {
-    fontSize: 50,
+    fontSize: Dimensions.height * 0.06,
     fontFamily: "Staatliches",
     color: "#FFFFFF",
     // left: 150,
   },
   button: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    left: "61%",
-    top: "-43%",
-    alignContent: "flex-end",
-    alignItems: "flex-end",
-    flex: 1,
+    width: Dimensions.width * 0.5,
+    height: Dimensions.height * 0.2,
+    left: Dimensions.width * 0.6,
   },
   adventur: {
-    alignSelf: "flex-end",
-    top: "50%",
-    right: "3%",
+    top: Dimensions.width * 0.09,
+    left: Dimensions.width * 0.01,
   },
 });

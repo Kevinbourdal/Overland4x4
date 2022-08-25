@@ -31,7 +31,15 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-
+- O crear una imagen de docker y crear un contenedor con la api dentro 
+- creamos la imagen
+```bash
+docker build -t overland/webapp
+```
+- y la ejecutamos con este comando 
+```bash
+ docker run -i -d -p 5000:5000 overland/webapp
+```
 
 - en linux
 En el archivo **configdb.sh** estan las instrucciones para ejecutar

@@ -3,11 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import { RootTabScreenProps } from "../types";
+import Dimensions from "../constants/Dimensions";
 
 export default function LandingPage({
   navigation,
 }: RootTabScreenProps<"route">) {
-
   function handleSubmitDriver() {
     navigation.navigate("DriverNavigation");
   }
@@ -54,7 +54,7 @@ const style = StyleSheet.create({
   },
   prue: {
     flex: 1,
-    padding: "50px",
+    padding: Dimensions.width * 0.05,
     backgroundColor: "#414345",
   },
 });

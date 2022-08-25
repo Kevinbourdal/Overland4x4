@@ -15,10 +15,11 @@ import Banner from "../components/Banner";
 import { View } from "../components/Themed";
 import MiPerfilScreen from "../screens/MiPerfilScreen";
 import AgregarAcompañanteScreen from "../screens/AgregarAcompañanteScreen";
-import CalendarioScreen from "../screens/CalendarioScreen"
+import CalendarioScreen from "../screens/CalendarioScreen";
 import InscripcionScreen from "../screens/InscripcionDeTravesiaScreen";
 import MisReservasScreen from "../screens/MisReservasScreen";
 import MiVehiculoScreen from "../screens/MiVehiculoScreen";
+import RegisterNavigation from "./RegisterNavigation";
 
 export default function Navigation({
   colorScheme,
@@ -44,6 +45,11 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Register"
+        component={RegisterNavigation}
+        options={{ title: "Register", headerShown: false }}
+      />
+      <Stack.Screen
         name="LandingPage"
         component={LandingPage}
         options={{ title: "LandingPage", headerShown: false }}
@@ -63,7 +69,7 @@ function RootNavigator() {
         component={MiPerfilScreen}
         options={{ title: "MiPerfilScreen", headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="AgregarAcompañanteScreen"
         component={AgregarAcompañanteScreen}
         options={{ title: "AgregarAcompañanteScreen", headerShown: false }}
@@ -88,12 +94,6 @@ function RootNavigator() {
         component={MiVehiculoScreen}
         options={{ title: "MiVehiculoScreen", headerShown: false }}
       />
-      
-      {/* <Stack.Screen
-        name="RegisterNavigation"
-        component={RegisterNavigation}
-        options={{ title: "RegisterNavigation", headerShown: false }}
-      /> */}
     </Stack.Navigator>
   );
 }

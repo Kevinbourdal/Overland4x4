@@ -26,7 +26,8 @@ export type RootStackParamList = {
   PassengerNavigation: undefined;
   root: undefined;
   route: undefined;
-  MiPerfilScreen: undefined
+  MiPerfilScreen: undefined;
+  Register: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
