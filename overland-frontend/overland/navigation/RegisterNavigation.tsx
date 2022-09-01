@@ -1,16 +1,9 @@
-import { checkPrime } from "crypto";
 import React, { FC, ReactElement, useEffect, useState } from "react";
-import {
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import Dimensions from "../constants/Dimensions";
 import { RootTabScreenProps } from "../types";
+import Alert from "react-native-awesome-alerts";
 
 export default function RegisterNavigation({
   navigation,
@@ -18,17 +11,25 @@ export default function RegisterNavigation({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repetPassword, setRepeatPassword] = useState("");
-  const [blur, setblur] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [message, setMessage] = useState("");
 
-  // useEffect(() => {
-  //   const lenRepear = repetPassword.length;
-  //   if (password.slice(lenRepear) !== repetPassword) {
-  //     console.log("Las contraseñas no coinciden");
-  //     // setRepeatPassword("");
-  //   }
-  // }, [repetPassword]);
+  function showAlert(message: string) {
+    setAlert(true);
+    setMessage(message);
+  }
 
-  const doUserRegistration = async function (): Promise<boolean> {
+  function doUserRegistration() {
+    if (email.length < 7 || email.indexOf("@") < 0) {
+      console.log("debe ingresar un email valido");
+      showAlert("debe ingresar un email valido");
+      return false;
+    }
+    if (password.length < 12) {
+      console.log("la contraseña debe ser de 12 caracteres");
+      return false;
+    }
+
     if (password !== repetPassword) {
       console.log("Las contraseñas no coinciden");
       setRepeatPassword("");
@@ -39,7 +40,7 @@ export default function RegisterNavigation({
     const emailValue: string = email;
     const passwordValue: string = password;
     return true;
-  };
+  }
 
   return (
     <SafeAreaView style={styles.prue}>
@@ -72,8 +73,16 @@ export default function RegisterNavigation({
         <View style={styles.containButton}>
           <ButtonBlueOutline
             style={styles.button}
-            text="Sign Up"
+            text="Registrarme"
             onPress={() => doUserRegistration()}
+          />
+        </View>
+        <View style={styles.alert}>
+          <Alert
+            cancelText="cerrar"
+            showProgress={false}
+            show={alert}
+            message={message}
           />
         </View>
       </View>
@@ -109,6 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#414345",
   },
   contain: {
+    justifyContent: "center",
     width: Dimensions.width * 0.4,
     height: Dimensions.height * 0.2,
     left: Dimensions.width * 0.35,
@@ -118,5 +128,11 @@ const styles = StyleSheet.create({
   },
   containButton: {
     left: Dimensions.width * 0.09,
+  },
+  alert: {
+    justifyContent: "center",
+    flex: 1,
+    width: Dimensions.width * 0.1,
+    height: Dimensions.height * 0.01,
   },
 });
