@@ -145,7 +145,6 @@ const style = StyleSheet.create({
     height: "130%",
     left: "22%",
     top: "-30%",
-
   }
 });
 

@@ -44,7 +44,7 @@ const Stack = createNativeStackNavigator();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Register"
         component={RegisterNavigation}
         options={{ title: "Register", headerShown: false }}
@@ -58,7 +58,7 @@ function RootNavigator() {
         name="PassengerNavigation"
         component={PassengerNavigation}
         options={{ title: "PassengerNavigation", headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="DriverNavigation"
         component={DriverNavigation}
