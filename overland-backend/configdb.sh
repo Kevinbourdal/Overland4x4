@@ -7,7 +7,7 @@
 docker pull mysql:8
 
 # Creamos un container que ejecutara mysql
-docker run -d -p 127.0.0.1:3306:3306 --name=mysql-overland -e MYSQL_ROOT_PASSWORD=pepeloquito! mysql:8
+
 
 
 ### Get mysql docker ip address
@@ -17,12 +17,13 @@ docker inspect mysql-overland | grep "IPAddress"
 
 
 ############
-#insert into role (id, role_name) values (1, 'admin');
-#insert into role (id, role_name) values (2, 'fullview');
-#insert into role (id, role_name) values (3, 'commonuser');
+#insert into role (id, role_name) values (1, 'fullAdmin');
+#insert into role (id, role_name) values (2, 'mediumAdmin');
+#insert into role (id, role_name) values (3, 'beginerAdmin')
+# #insert into role (id, role_name) values (4, 'clients');
 #
-#insert into account (id, role_id, username, email, password) values (1, 1, 'admin', 'admin@overland.com', 'overland1');
-#insert into account (id, role_id, username, email, password) values (2, 3, 'usuario', 'usuario@overland.com', 'overland2');
+#insert into usuario (id_usuario, email, password) values (1, 'admin@overland.com', 'overland1');
+#insert into client (id_client, usuario, data, accompanist, vehicle, rol, hotel) values (1, 1, 1, 2, 2, 4, 1);
 ############
 
 

@@ -1,5 +1,9 @@
 import {configureStore } from '@reduxjs/toolkit'
-import TodosSlice from './TodosSlice'
+import stackSlice from './StackSlice'
 
 
-export const store = configureStore({reducer:TodosSlice})
+export const store = configureStore({
+    reducer:{
+        stackSlice,
+    }
+})

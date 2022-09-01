@@ -9,6 +9,7 @@ from views import (
     HotelView,
     VehicleView,
     ClientView,
+    UsuarioView
 )
 
 # list with each access point in dict format
@@ -17,6 +18,11 @@ urls = [
         'resource': ClientView,
         'path': '/client',
         'endpoint': 'client',
+    },
+    {
+        'resource': UsuarioView,
+        'path': '/usuario',
+        'endpoint': 'usuario',
     },
     {
         'resource': DataView,
