@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 
 export default function ButtonBlueOutline(props: any) {
   const { text, onPress } = props;

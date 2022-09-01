@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 import { RootTabScreenProps } from "../types";
 
 export default function RegisterNavigation({

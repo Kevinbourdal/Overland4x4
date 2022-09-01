@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import { RootTabScreenProps } from "../types";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 
 export default function LandingPage({
   navigation,
