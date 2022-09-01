@@ -87,6 +87,26 @@ class RoleModel(ModelBase, db.Model):
         return f'{self.role_name} role'
 
 
+class UsuarioSchema(ma.Schema):
+    id_usuario = fields.Integer()
+    password = fields.String(required=True)
+    email = fields.String(required=True)
+
+
+class UsuarioModel(ModelBase, db.Model):
+    __tablename__ = 'usuario'
+
+    id_usuario = db.Column('id_usuario', db.Integer, autoincrement=True, primary_key=True)
+    password = db.Column('password', db.String(30), unique=False, nullable=False)
+    email = db.Column('email', db.String(40), unique=True, nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return f'{self.name} name'
+
+
 class DataSchema(ma.Schema):
     id_data = fields.Integer()
     client_rol = fields.Integer()
@@ -108,7 +128,7 @@ class DataModel(ModelBase, db.Model):
     card_id = db.Column('card_id', db.Integer, unique=False, nullable=False, primary_key=True)
     client_rol_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
     client_rol = db.relationship('ClientModel',
-                                 backref=db.backref(foreign_key=['id_client'], lazy=True))
+                                 backref=db.backref('id_client', lazy=True))
     gender_id = db.Column(db.Integer, db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
     gender = db.relationship('GenderModel',
                              backref=db.backref('gender', lazy=True))
@@ -200,8 +220,7 @@ class PathologiesModel(ModelBase, db.Model):
 
 class ClientSchema(ma.Schema):
     id_client = fields.Integer()
-    password = fields.String(required=True)
-    email = fields.String(required=True)
+    usuario = fields.Integer()
     data = fields.Integer()
     accompanist = fields.Integer()
     vehicle = fields.Integer()
@@ -213,14 +232,15 @@ class ClientModel(ModelBase, db.Model):
     __tablename__ = 'client'
 
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
+    usuario = db.relationship('UsuarioModel',
+                               backref=db.backref('usuario', lazy=True))
     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
     data = db.relationship('DataModel',
                            backref=db.backref('data', lazy=True))
     accompanist_id = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
     accompanist = db.relationship('AccompanistModel',
                                   backref=db.backref('accompanist', lazy=True))
-    password = db.Column('password', db.String(30), unique=False, nullable=False)
-    email = db.Column('email', db.String(40), unique=True, nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
     vehicle = db.relationship('VehicleModel',
                               backref=db.backref('vehicle', lazy=True))
