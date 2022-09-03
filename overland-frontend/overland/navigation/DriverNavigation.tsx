@@ -110,7 +110,7 @@ function handleAcompañante() {
             <ButtonNavigate text="AGREGAR ACOMPAÑANTE" onPress={() => handleAcompañante()}/>
           </View>
         </View>
-        <View style={style. boxBlackDisplay}>
+        <View style={style.boxBlackDisplay}>
             {profile === true ? <MiPerfilScreen /> : <></>}
             {myVehicle === true ? <MiVehiculoScreen /> : <></>}
             {calendario === true ? <CalendarioScreen /> : <></>}
@@ -133,47 +133,22 @@ const style = StyleSheet.create({
   },
   boxBlackNavbar: {
     zIndex: -1,
-    top: "-36%",
+    top: "-39%",
     backgroundColor: "#000000",
     width: "20%",
     position:"absolute",
-    height: "136%",
+    height: "139%",
   },
   boxBlackDisplay:{
     backgroundColor: "#000000",
     width: "76%",
-    height: "130%",
+    height: "132%",
     left: "22%",
-    top: "-30%",
-  }
+    top: "-32%",
+  },
+
 });
 
-
-
-//   const StackDriver = createNativeStackNavigator();
-  
-//   return (
-//     <NavigationContainer linking={LinkingConfiguration} >
-//       <StackDriver.Navigator>
-//         <StackDriver.Screen 
-//         name="MiPerfil"
-//         component={MiPerfilScreen}
-//         options={{title:"MiPerfil", headerShown: false }}/>
-//       </StackDriver.Navigator>
-//       <TabDriver />
-//     </NavigationContainer>
-//   )
-// }
-
-// const Tab= createBottomTabNavigator();
-
-// function TabDriver (){
-//   return(
-//     <Tab.Navigator>
-//       <Tab.Screen name="Mi perfil" component={MiPerfilScreen}/>
-//     </Tab.Navigator>
-//   );
-// }
 
 
 

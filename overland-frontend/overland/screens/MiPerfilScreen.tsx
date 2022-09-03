@@ -8,35 +8,44 @@ export default function MiPerfilScreen(){
             <View style={style.container}>
                 <View style={style.box}>  
                     <View>
-                        <Text style={style.text}>firstname</Text>
+                        <Text style={style.text}>Nombre:</Text>
+                        <Text style={style.boxText}>Kevin</Text>
                     </View>
                     <View>
-                        <Text style={style.text}>lastname</Text>
+                        <Text style={style.text}>DNI:</Text>
+                        <Text style={style.boxText}>1233548789</Text>
                     </View>
                     <View>
-                        <Text style={style.text}>cardId</Text>
-                    </View>
-                </View>
-                <View>  
-                    <View>
-                        <Text style={style.text}>gender</Text>
-                    </View>
-                    <View>
-                        <Text style={style.text}>born</Text>
-                    </View>
-                    <View>
-                        <Text style={style.text}>nationality</Text>
+                        <Text style={style.text}>Genero:</Text>
+                        <Text style={style.boxText}>Masculino</Text>
                     </View>
                 </View>
                 <View>  
                     <View>
-                        <Text style={style.text}>phone</Text>
+                        <Text style={style.text}>Apellido:</Text>
+                        <Text style={style.boxText}>Bourdal</Text>
                     </View>
                     <View>
-                        <Text style={style.text}>pathologies</Text>
+                        <Text style={style.text}>Fecha de nacimineto:</Text>
+                        <Text style={style.boxText}>16/02/1995</Text>
                     </View>
                     <View>
-                        <Text style={style.text}>observLunch</Text>
+                        <Text style={style.text}>Ficha medica:</Text>
+                        <Text style={style.boxText}>Rodilla de alambre, sensible al tacto</Text>
+                    </View>
+                </View>
+                <View>  
+                    <View>
+                        <Text style={style.text}>Nacionalidad:</Text>
+                        <Text style={style.boxText}>Yanky</Text>
+                    </View>
+                    <View>
+                        <Text style={style.text}>Telefono:</Text>
+                        <Text style={style.boxText}>3516881400</Text>
+                    </View>
+                    <View>
+                        <Text style={style.text}>Observaciones Alimenticias:</Text>
+                        <Text style={style.boxText}>Dieta a base de birrita bien fria</Text>
                     </View>
                 </View>
             </View>
@@ -45,15 +54,21 @@ export default function MiPerfilScreen(){
 }
 
 const style = StyleSheet.create({
-    text:{
+    boxText:{
         color:"#f1f1f1",
-        paddingVertical: 20,
+        paddingVertical: 15,
         width: Dimensions.width * 0.12,
-        marginVertical: 20,
+        marginVertical: 10,
         borderRadius: 10,
         borderWidth: 4,
         borderColor: "#0EAEE0",
         textAlign: 'center',
+        fontWeight: "bold",
+    },
+    text:{
+        marginVertical: 10,
+        color:"#f1f1f1",
+        textAlign:"center",
     },
     container:{
         flex:1,
@@ -66,5 +81,6 @@ const style = StyleSheet.create({
     },
     box:{
         alignContent: "space-around",
+        
     }
 })
