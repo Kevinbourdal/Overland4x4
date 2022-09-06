@@ -26,7 +26,9 @@ from models import (
     HotelSchema,
     HotelModel,
     AccompanistSchema,
-    AccompanistModel
+    AccompanistModel,
+    UsuarioModel,
+    UsuarioSchema
 )
 
 from utils import (
@@ -68,15 +70,15 @@ class BaseView(Resource):
         return response(401)
 
     def exists_account(self, email=None):
-        email = ClientModel.query.filter_by(email=email).first()
+        email = UsuarioModel.query.filter_by(email=email).first()
         return email is not None
 
     def is_valid_token_data(self, email):
-        account = ClientModel.query.filter_by(email=email).first()
+        account = UsuarioModel.query.filter_by(email=email).first()
         return account is not None
 
     def account_has_userdata(self, email):
-        account = ClientModel.query.filter_by(email=email).first()
+        account = UsuarioModel.query.filter_by(email=email).first()
         user = DataModel.query.filter_by(id_data=account.id_client).first()
         return user is not None
 
@@ -85,7 +87,7 @@ class UserSession(BaseView):
 
     def __init__(self):
         super(UserSession, self).__init__()
-        UserSession.ClientSchema = ClientSchema()
+        UserSession.UsuarioSchema = UsuarioSchema()
 
     def get(self, **kwargs):
         """
@@ -94,7 +96,7 @@ class UserSession(BaseView):
         token = request.args.get('token', '')
         if token:
             token_data = decode_token(token)
-            user = ClientModel.query.filter_by(email=token_data['email']).first()
+            user = UsuarioModel.query.filter_by(email=token_data['email']).first()
             if user:
                 user.validated = True
                 errors = user.save()
@@ -112,15 +114,13 @@ class UserSession(BaseView):
             return response(409, 'Email ya registrado')
         if not error:
             try:
-                account_data = self.ClientSchema.load({'email': json_data['email'],
-                                                       'password': hashed_password(json_data['password']),
-                                                       'role_id': 4,
-                                                       })
+                account_data = self.UsuarioSchema.load({'email': json_data['email'],
+                                                        'password': hashed_password(json_data['password'])})
             except marshmallow.exceptions.ValidationError as errors:
                 print('error', errors)
                 return response(400, str(errors))
 
-            new_account = ClientModel(**account_data)
+            new_account = UsuarioModel(**account_data)
             error = new_account.save()
             if not error:
                 token = gen_token({'email': json_data['email'], 'username': json_data['username']})
@@ -143,7 +143,7 @@ class UserSession(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             except marshmallow.exceptions.ValidationError as errors:
                 print('error', errors)
                 return response(400, str(errors))
@@ -160,7 +160,7 @@ class UserSession(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             except marshmallow.exceptions.ValidationError as errors:
                 print('error', errors)
                 return response(400, str(errors))
@@ -191,7 +191,7 @@ class DataView(BaseView):
     def get(self):
         email = request.args.get('email', None)
         if email is not None:
-            account = ClientModel.query.filter_by(email=email).first()
+            account = UsuarioModelModel.query.filter_by(email=email).first()
             user = DataModel.query.filter_by(id_data=account.data).first()
             if user is not None:
                 return response(200, data={'user': {'id_data': user.id_data,
@@ -213,7 +213,7 @@ class DataView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     user_data = self.user_schema.load({'id_data': json_data['id_data'],
@@ -249,7 +249,7 @@ class DataView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 user = DataModel.query.filter_by(account_id=account.id).first()
                 user_data = self.user_schema.load({'id_data': json_data['id_data'],
                                                    'card_id': json_data['card_id'],
@@ -285,6 +285,73 @@ class DataView(BaseView):
         return response(400, msg="Error en backend")
 
 
+class UsuarioView(BaseView):
+
+    def __init__(self):
+        super(UsuarioView, self).__init__()
+        self.usuario_schema = UsuarioSchema()
+
+    def get(self):
+        usuario = UsuarioModel.query
+        if usuario is not None:
+            return response(200, data={'usuario': {'id_usuario': usuario.id_usuario,
+                                                   'mail': usuario.mail,
+                                                   'password': usuario.password}})
+        return response(400)
+
+    def post(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
+            if account is not None:
+                try:
+                    usuario_data = self.usuario_schema.load({'mail': json_data['mail'],
+                                                             'password': json_data['password']})
+
+                except marshmallow.exceptions.ValidationError as errors:
+                    print('error', errors)
+                    return response(400, str(errors))
+                new_usuario = UsuarioModel(**usuario_data)
+                error = new_usuario.save()
+                if not error:
+                    return response(200, data={'id': new_usuario.id_usuario})
+                print(error)
+                return error
+            else:
+                print('usuario don\'t exists')
+        print(error)
+        return response(400, msg="Error en backend")
+
+    def put(self):
+        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
+        if not self.is_valid_token_data(account_data['email']):
+            return response(401, 'Wrong token')
+        json_data, error = get_data(request)
+        if not error:
+            try:
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
+                usuario = UsuarioModel.query.filter_by(account_id=account.id).first()
+                usuario_data = self.accompanist_schema.load({'id_usuario': json_data['id_usuario'],
+                                                             'email': json_data['email'],
+                                                             'password': json_data['password']})
+            except marshmallow.exceptions.ValidationError as errors:
+                print('error', errors)
+                return response(400, str(errors))
+
+            usuario.id_usuario = usuario_data['id_usuario']
+            usuario.client = usuario_data['mail']
+            usuario.data = usuario_data['password']
+
+            error = usuario.save()
+            if not error:
+                return response(200, data={'id': usuario.id})
+
+        return response(400, msg="Error en backend")
+
+
 class ClientView(BaseView):
     """
     Class user which allow register, login and logout an user
@@ -297,14 +364,13 @@ class ClientView(BaseView):
     def get(self):
         email = request.args.get('email', None)
         if email is not None:
-            account = ClientModel.query.filter_by(email=email).first()
+            account = UsuarioModel.query.filter_by(email=email).first()
             client = DataModel.query.filter_by(id_data=account.data).first()
             if client is not None:
                 return response(200, data={'client': {'id_client': client.id_client,
                                                       'data_id': client.data_id,
+                                                      'usuario': client.usuario,
                                                       'accompanist': client.accompanist,
-                                                      'password': client.password,
-                                                      'email': client.email,
                                                       'vehicle': client.vehicle,
                                                       'role': client.role,
                                                       'hotel': client.hotel}})
@@ -316,14 +382,13 @@ class ClientView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     client_data = self.client_schema.load({'id_client': json_data['id_client'],
                                                            'data_id': json_data['data_id'],
                                                            'accompanist': json_data['accompanist'],
-                                                           'password': json_data['password'],
-                                                           'email': json_data['email'],
+                                                           'usuario': json_data['usuario'],
                                                            'vehicle': json_data['vehicle'],
                                                            'role': json_data['role'],
                                                            'hotel': json_data['hotel']})
@@ -349,13 +414,12 @@ class ClientView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 client = DataModel.query.filter_by(account_id=account.id).first()
                 client_data = self.user_schema.load({'id_client': json_data['id_client'],
                                                      'data_id': json_data['data_id'],
                                                      'accompanist': json_data['accompanist'],
-                                                     'password': json_data['password'],
-                                                     'email': json_data['email'],
+                                                     'usuario': json_data['usuario'],
                                                      'vehicle': json_data['vehicle'],
                                                      'role': json_data['role'],
                                                      'hotel': json_data['hotel']})
@@ -363,14 +427,13 @@ class ClientView(BaseView):
                 print('error', errors)
                 return response(400, str(errors))
 
-            client.id_data = client_data['id_client']
-            client.card_id = client_data['data_id']
-            client.client_rol = client_data['accompanist']
-            client.gender = client_data['password']
-            client.pathologies = client_data['email']
-            client.nationality = client_data['vehicle']
-            client.phone = client_data['role']
-            client.born = client_data['hotel']
+            client.id_client = client_data['id_client']
+            client.data_id = client_data['data_id']
+            client.accompanist = client_data['accompanist']
+            client.usuario = client_data['usuario']
+            client.vehicle = client_data['vehicle']
+            client.role = client_data['role']
+            client.hotel = client_data['hotel']
 
             error = client.save()
             if not error:
@@ -398,7 +461,7 @@ class GenderView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     gender_data = self.gender_schema.load({'name': json_data['name']})
@@ -437,7 +500,7 @@ class PathologiesView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     pathologies_data = self.pathologies_schema.load({'name': json_data['name']})
@@ -477,7 +540,7 @@ class AccompanistView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     accompanist_data = self.accompanist_schema.load({'name': json_data['name']})
@@ -503,7 +566,7 @@ class AccompanistView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 accompanist = AccompanistModel.query.filter_by(account_id=account.id).first()
                 accompanist_data = self.accompanist_schema.load({'id_accompanist': json_data['id_accompanist'],
                                                                  'client': json_data['client'],
@@ -556,7 +619,7 @@ class RoleView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     role_data = self.role_schema.load({'role_name': json_data['role_name']})
@@ -596,7 +659,7 @@ class LunchView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     lunch_data = self.lunch_schema.load({'name': json_data['name']})
@@ -622,7 +685,7 @@ class LunchView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 lunch = LunchModel.query.filter_by(account_id=account.id).first()
                 lunch_data = self.lunch_schema.load({'id_lunch': json_data['id_lunch'],
                                                      'name': json_data['name'],
@@ -677,7 +740,7 @@ class RoomsView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     rooms_data = self.rooms_schema.load({'name': json_data['name']})
@@ -703,7 +766,7 @@ class RoomsView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 rooms = RoomsModel.query.filter_by(account_id=account.id).first()
                 rooms_data = self.rooms_schema.load({'id_rooms': json_data['id_rooms'],
                                                      'name': json_data['name'],
@@ -762,7 +825,7 @@ class HotelView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     hotel_data = self.hotel_schema.load({'name': json_data['name']})
@@ -788,7 +851,7 @@ class HotelView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 hotel = HotelModel.query.filter_by(account_id=account.id).first()
                 hotel_data = self.hotel_schema.load({'id_hotel': json_data['id_hotel'],
                                                      'rooms': json_data['rooms'],
@@ -853,7 +916,7 @@ class VehicleView(BaseView):
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
-            account = ClientModel.query.filter_by(email=json_data['email']).first()
+            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             if account is not None:
                 try:
                     vehicle_data = self.vehicle_schema.load({'name': json_data['name']})
@@ -879,7 +942,7 @@ class VehicleView(BaseView):
         json_data, error = get_data(request)
         if not error:
             try:
-                account = ClientModel.query.filter_by(email=json_data['email']).first()
+                account = UsuarioModel.query.filter_by(email=json_data['email']).first()
                 vehicle = VehicleModel.query.filter_by(account_id=account.id).first()
                 vehicle_data = self.vehicle_schema.load({'id_vehicle': json_data['id_vehicle'],
                                                          'name': json_data['name'],

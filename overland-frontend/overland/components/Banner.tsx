@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native";
 import ButtonBlueOutline from "./ButtonBlueOutline";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 
 export default function Banner() {
   return (

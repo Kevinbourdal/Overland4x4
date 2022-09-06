@@ -1,9 +1,9 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 import { RootTabScreenProps } from "../types";
-import Alert from "react-native-awesome-alerts";
+// import Alert from "react-native-awesome-alerts";
 
 export default function RegisterNavigation({
   navigation,
@@ -77,14 +77,14 @@ export default function RegisterNavigation({
             onPress={() => doUserRegistration()}
           />
         </View>
-        <View style={styles.alert}>
+        {/* <View style={styles.alert}>
           <Alert
             cancelText="cerrar"
             showProgress={false}
             show={alert}
             message={message}
           />
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

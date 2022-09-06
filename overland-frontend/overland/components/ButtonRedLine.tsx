@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Dimensions from "../constants/dimensions";
 
-export default function ButtonBlueOutline(props: any) {
+export default function ButtonRedLine(props: any) {
   const { text, onPress } = props;
 
   return (
@@ -19,7 +19,7 @@ const style = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10,
     borderWidth: 4,
-    borderColor: "#0EAEE0",
+    borderColor: "#E00E0E",
   },
   text: {
     textAlign: "center",
