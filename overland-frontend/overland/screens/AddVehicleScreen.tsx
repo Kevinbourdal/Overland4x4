@@ -38,7 +38,7 @@ export default function AddVehicle(){
                 </View>
             </View>
             <View>
-                <Text style={style.titleDescription}>Descripcion de mejoras:</Text>
+                <Text style={style.titleDescription}>Descripcion de mejora:</Text>
                 <Text style={style.textDescription}>No tengo ni idea que clase de mejora puede tener pero necesito rellenar este campo con palabras sin sentido frutilla.</Text>
             </View>
         </View>
