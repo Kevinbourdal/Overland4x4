@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
-import Dimensions from "../constants/dimensions";
+import Dimensions from "../constants/Dimensions";
 import { RootTabScreenProps } from "../types";
 import Alert from "react-native-awesome-alerts";
 
-export default function RegisterNavigation({
+export default function LoginNavigation({
   navigation,
 }: RootTabScreenProps<"route">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [repetPassword, setRepeatPassword] = useState("");
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -31,21 +30,11 @@ export default function RegisterNavigation({
     }
     if (password.length < 12) {
       showAlert("La contraseña debe tener al menos 12 caracteres");
-      setRepeatPassword("");
-      setPassword("");
       return false;
     }
-
-    if (password !== repetPassword) {
-      showAlert("Las contraseñas no coinciden");
-      setRepeatPassword("");
-      setPassword("");
-      return false;
-    }
-    showAlert("Se le envio un email con la confirmacion");
+    navigation.navigate("LandingPage");
     const emailValue: string = email;
     const passwordValue: string = password;
-    navigation.navigate("Login");
     return true;
   }
 
@@ -66,8 +55,8 @@ export default function RegisterNavigation({
             }}
           />
         </View>
-        <View style={styles.register}>
-          <Text style={styles.registeTitle}>Register</Text>
+        <View style={styles.login}>
+          <Text style={styles.LoginTitle}>Login</Text>
         </View>
         <TextInput
           style={styles.input}
@@ -84,17 +73,10 @@ export default function RegisterNavigation({
           secureTextEntry
           onChangeText={(text) => setPassword(text)}
         />
-        <TextInput
-          style={styles.input}
-          value={repetPassword}
-          placeholder={"Repear Password"}
-          secureTextEntry
-          onChangeText={(text) => setRepeatPassword(text)}
-        />
         <View style={styles.containButton}>
           <ButtonBlueOutline
             style={styles.button}
-            text="Registrarme"
+            text="Login"
             onPress={() => doUserRegistration()}
           />
         </View>
@@ -113,16 +95,15 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: "white",
   },
-  register: {
+  login: {
     flex: 1,
-    left: Dimensions.width * 0.1,
+    left: Dimensions.width * 0.12,
     top: Dimensions.height * -0.1,
   },
-  registeTitle: {
+  LoginTitle: {
     color: "#FFFFFF",
     fontSize: 40,
     fontFamily: "Bangers",
-    alignSelf: "flex-start",
     fontStyle: "normal",
     marginRight: Dimensions.width * 0.3,
     // top: -200,
@@ -139,11 +120,9 @@ const styles = StyleSheet.create({
   },
   button: {
     color: "#f1f1f1",
-    alignSelf: "flex-start",
   },
   containButton: {
     left: Dimensions.width * 0.09,
-    alignSelf: "flex-start",
   },
   alert: {
     flex: 1,
