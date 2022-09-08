@@ -1,9 +1,9 @@
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import Dimensions from "../constants/dimensions";
 import { RootTabScreenProps } from "../types";
-// import Alert from "react-native-awesome-alerts";
+import Alert from "react-native-awesome-alerts";
 
 export default function RegisterNavigation({
   navigation,
@@ -19,32 +19,51 @@ export default function RegisterNavigation({
     setMessage(message);
   }
 
+  function closeAlert() {
+    setAlert(false);
+  }
+
   function doUserRegistration() {
     if (email.length < 7 || email.indexOf("@") < 0) {
-      console.log("debe ingresar un email valido");
-      showAlert("debe ingresar un email valido");
+      showAlert("Debe ingresar un email valido");
+      setEmail("");
       return false;
     }
     if (password.length < 12) {
-      console.log("la contraseña debe ser de 12 caracteres");
+      showAlert("La contraseña debe tener al menos 12 caracteres");
       return false;
     }
 
     if (password !== repetPassword) {
-      console.log("Las contraseñas no coinciden");
+      showAlert("Las contraseñas no coinciden");
       setRepeatPassword("");
       setPassword("");
       return false;
     }
-    navigation.navigate("LandingPage");
+    showAlert("Se le envio un email con la confirmacion");
     const emailValue: string = email;
     const passwordValue: string = password;
+    navigation.navigate("Login");
     return true;
   }
 
   return (
     <SafeAreaView style={styles.prue}>
       <View style={styles.contain}>
+        <View style={styles.alert}>
+          <Alert
+            cancelText="cerrar"
+            showProgress={true}
+            show={alert}
+            title={message}
+            closeOnTouchOutside={false}
+            showConfirmButton={true}
+            confirmText="Cerrar"
+            onConfirmPressed={() => {
+              closeAlert();
+            }}
+          />
+        </View>
         <View style={styles.register}>
           <Text style={styles.registeTitle}>Register</Text>
         </View>
@@ -77,14 +96,6 @@ export default function RegisterNavigation({
             onPress={() => doUserRegistration()}
           />
         </View>
-        {/* <View style={styles.alert}>
-          <Alert
-            cancelText="cerrar"
-            showProgress={false}
-            show={alert}
-            message={message}
-          />
-        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -130,9 +141,7 @@ const styles = StyleSheet.create({
     left: Dimensions.width * 0.09,
   },
   alert: {
-    justifyContent: "center",
     flex: 1,
-    width: Dimensions.width * 0.1,
-    height: Dimensions.height * 0.01,
+    width: Dimensions.width * 0.3,
   },
 });

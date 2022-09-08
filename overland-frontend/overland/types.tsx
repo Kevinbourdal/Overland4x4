@@ -28,6 +28,7 @@ export type RootStackParamList = {
   route: undefined;
   MiPerfilScreen: undefined;
   Register: undefined;
+  Login: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -39,6 +40,7 @@ export type RootTabParamList = {
   PassengerNavigation: undefined;
   route: undefined;
   MiPerfil: undefined;
+  Login: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

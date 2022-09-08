@@ -12,9 +12,9 @@ export default function Banner() {
             height: Dimensions.height * 0.3,
             position: "absolute",
             zIndex: -1,
-            width: Dimensions.width * 1,
+            width: Dimensions.width,
           }}
-          source={require("../assets/images/portada.jpg")}
+          source={require("../assets/images/pic.jpg")}
         />
 
         <Image

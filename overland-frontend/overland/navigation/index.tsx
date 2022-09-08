@@ -11,7 +11,6 @@ import LandingPage from "../Landing/LandingPage";
 import DriverNavigation from "./DriverNavigation";
 import PassengerNavigation from "./PassengerNavigation";
 import Banner from "../components/Banner";
-// import RegisterNavigation from "./RegisterNavigation";
 import { View } from "../components/Themed";
 import MiPerfilScreen from "../screens/MiPerfilScreen";
 import AgregarAcompañanteScreen from "../screens/AgregarAcompañanteScreen";
@@ -20,6 +19,7 @@ import InscripcionScreen from "../screens/InscripcionDeTravesiaScreen";
 import MisReservasScreen from "../screens/MisReservasScreen";
 import MiVehiculoScreen from "../screens/MiVehiculoScreen";
 import RegisterNavigation from "./RegisterNavigation";
+import LoginNavigation from "./LoginNavigation";
 
 export default function Navigation({
   colorScheme,
@@ -48,6 +48,11 @@ function RootNavigator() {
         name="Register"
         component={RegisterNavigation}
         options={{ title: "Register", headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginNavigation}
+        options={{ title: "Login", headerShown: false }}
       />
       <Stack.Screen
         name="LandingPage"
