@@ -23,11 +23,10 @@ export default function MyVehicleScreen(){
         <SafeAreaView>
             <View>
                 {addVehicle === true ? <AddVehicle /> : <CardVehicle />}
-
             </View>
-            <View style={style.botones}>                
-                <ButtonRedLine text='Agregar Vehiculo' onPress={() => handleAddVehicle()}/>
-            </View>
+                <View style={style.botones}>                
+                    <ButtonRedLine text='Agregar Vehiculo' onPress={() => handleAddVehicle()}/>
+                </View>
 
         </SafeAreaView>
     )
