@@ -16,7 +16,7 @@ if [ "$migrations_exists" == '1' ]; then
     echo "migrations folder already exist. Add reset argument to delete it and make a new."
   fi
 else
-  python migrate.py db init
+  python migrate.py db upgrade
 fi
 
 ## En caso de error como: Can't locate revision identified by '5c8b3d598949'
