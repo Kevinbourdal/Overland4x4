@@ -1,11 +1,10 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { NativeRouter, Route, Routes } from "react-router-native";
+import {View } from "react-native";
+import {Route, Routes } from "react-router-native";
 import Navigation from "./navigation";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
-import Banner from "./components/Banner";
-import DriverNavigation from "./navigation/DriverNavigation";
+
 
 export default function Main() {
   const isLoadingComplete = useCachedResources();

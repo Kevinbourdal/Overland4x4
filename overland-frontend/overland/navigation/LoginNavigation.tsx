@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
-import Dimensions from "../constants/Dimensions";
+import Dimensions from "../constants/dimensions";
 import { RootTabScreenProps } from "../types";
 import Alert from "react-native-awesome-alerts";
 
