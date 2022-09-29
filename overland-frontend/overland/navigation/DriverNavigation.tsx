@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView, Dimensions, } from "react-native";
 import ButtonNavigate from "../components/ButtonNavigate";
 import MiPerfilScreen from "../screens/MiPerfilScreen";
 import { RootTabScreenProps } from "../types";
@@ -8,6 +8,7 @@ import CalendarioScreen from "../screens/CalendarioScreen";
 import InscripcionScreen from "../screens/InscripcionDeTravesiaScreen";
 import MisReservasScreen from "../screens/MisReservasScreen";
 import AgregarAcompañanteScreen from "../screens/AgregarAcompañanteScreen";
+import dimensions from "../constants/dimensions";
 
 export default function DriverNavigation({
   navigation,
@@ -102,12 +103,12 @@ function handleAcompañante() {
       <View style={{ flex: 1, backgroundColor: "#414345" }}>
         <View style={style.boxBlackNavbar} >
           <View style={style.Containerbutton}>
-            <ButtonNavigate text="MI PERFIL" onPress={() => handleProfile()} />
-            <ButtonNavigate text="MI VEHICULO" onPress={() => handleMyVehicle()}/>
-            <ButtonNavigate text="CALENDARIO DE TRAVESIAS" onPress={() => handleCalendario()}/>
-            <ButtonNavigate text="INCRIBIRME EN UNA TRAVESIA" onPress={() => handleInscripcion()}/>
-            <ButtonNavigate text="MI RESERVAS" onPress={() => handleReservas()}/>
-            <ButtonNavigate text="AGREGAR ACOMPAÑANTE" onPress={() => handleAcompañante()}/>
+              <ButtonNavigate text="MI PERFIL" onPress={() => handleProfile()} />
+              <ButtonNavigate text="MI VEHICULO" onPress={() => handleMyVehicle()}/>
+              <ButtonNavigate text="CALENDARIO DE TRAVESIAS" onPress={() => handleCalendario()}/>
+              <ButtonNavigate text="INCRIBIRME EN UNA TRAVESIA" onPress={() => handleInscripcion()}/>
+              <ButtonNavigate text="MI RESERVAS" onPress={() => handleReservas()}/>
+              <ButtonNavigate text="AGREGAR ACOMPAÑANTE" onPress={() => handleAcompañante()}/>
           </View>
         </View>
         <View style={style.boxBlackDisplay}>
@@ -125,26 +126,26 @@ function handleAcompañante() {
 
 const style = StyleSheet.create({
   Containerbutton: {
-    width: "500%",
+    width: dimensions.width * 0.39,
     alignSelf: "flex-start",
     zIndex: 1,
     justifyContent: "space-evenly",
-    left: 25,
+    left: dimensions.height * 0.04,
   },
   boxBlackNavbar: {
     zIndex: -1,
-    top: "-39%",
+    top: dimensions.height * -0.2,
     backgroundColor: "#000000",
-    width: "20%",
+    width: dimensions.width * 0.2,
     position:"absolute",
-    height: "139%",
+    height: dimensions.height * 0.7,
   },
   boxBlackDisplay:{
     backgroundColor: "#000000",
-    width: "76%",
-    height: "132%",
-    left: "22%",
-    top: "-32%",
+    width: dimensions.width * 0.76,
+    height: dimensions.height * 0.66,
+    left: dimensions.width * 0.22,
+    top: dimensions.height * -0.16,
   },
 
 });

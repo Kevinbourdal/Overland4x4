@@ -23,6 +23,7 @@ export type RootStackParamList = {
   Modal: undefined;
   LandingPage: undefined;
   DriverNavigation: undefined;
+  DriverNavigationApp: undefined;
   PassengerNavigation: undefined;
   root: undefined;
   route: undefined;
@@ -38,6 +39,7 @@ export type RootTabParamList = {
   LandingPage: undefined;
   DriverNavigation: undefined;
   PassengerNavigation: undefined;
+  DriverNavigationApp: undefined;
   route: undefined;
   MiPerfil: undefined;
   Login: undefined;

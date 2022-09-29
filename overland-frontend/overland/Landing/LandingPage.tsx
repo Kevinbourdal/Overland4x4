@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonBlueOutline from "../components/ButtonBlueOutline";
 import { RootTabScreenProps } from "../types";
@@ -8,6 +8,10 @@ import Dimensions from "../constants/dimensions";
 export default function LandingPage({
   navigation,
 }: RootTabScreenProps<"route">) {
+  // const driverNavigate = Platform.select({
+  //   android: () => require("./DriverNavigationApp").default,
+  //   default: () => require("./DriverNavigate").default
+  // })()
   function handleSubmitDriver() {
     navigation.navigate("DriverNavigation");
   }
@@ -36,7 +40,11 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     flexDirection: "row",
-    top: "-40%",
+    top: Platform.select({
+      ios: Dimensions.width * 1,
+      android: Dimensions.width * -0.2,
+      default: Dimensions.width * -0.07,
+      }),
   },
   button: {
     alignContent: "stretch",
@@ -47,7 +55,7 @@ const style = StyleSheet.create({
   registeTitle: {
     color: "#FFFFFF",
     fontSize: 40,
-    fontFamily: "Bangers",
+    // fontFamily: "Bangers",
     fontStyle: "normal",
     textAlign: "center",
     // top: -200,

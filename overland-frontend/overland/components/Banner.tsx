@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native";
+import { View, Text, SafeAreaView, Image, StyleSheet, Platform } from "react-native";
 import ButtonBlueOutline from "./ButtonBlueOutline";
 import Dimensions from "../constants/dimensions";
+import theme from "./Themed";
+import dimensions from "../constants/dimensions";
 
 export default function Banner() {
   return (
@@ -9,11 +11,19 @@ export default function Banner() {
       <SafeAreaView style={style.container}>
         <Image
           style={{
-            height: Dimensions.height * 0.3,
+            height: Platform.select({
+              ios: Dimensions.height * 0.1,
+              android: Dimensions.height * 0.3,
+              default: Dimensions.height * 0.3,
+              }),
             position: "absolute",
-            resizeMode: "cover",
+            // resizeMode: "cover",
             zIndex: -1,
-            width: Dimensions.width,
+            width: Platform.select({
+              ios: Dimensions.width * 1,
+              android: Dimensions.width * 1.5,
+              default: Dimensions.width * 1,
+              }),
           }}
           source={require("../assets/images/pic.jpg")}
         />
@@ -44,32 +54,80 @@ const style = StyleSheet.create({
     // backgroundColor: "414345",
   },
   containerTitle: {
-    left: Dimensions.width * 0.02,
-    top: Dimensions.height * 0.03,
+    left: Platform.select({
+      ios: Dimensions.width * 0.05,
+      android: Dimensions.width * 0.07,
+      default: Dimensions.width * 0.02,
+      }),
+    top:Platform.select({
+      ios: Dimensions.height * 0.05,
+      android: Dimensions.height * 0.1, // modificar cuando logres estirar la palabra
+      default: Dimensions.height * 0.04,
+      }),
+    width: Dimensions.width * 0.3,
     alignSelf: "flex-start",
+    
   },
   logo: {
-    width: "100px",
-    height: "100px",
+    width: Platform.select({
+      ios: Dimensions.height * 0.1,
+      android: Dimensions.height * 0.13,
+      default: Dimensions.height * 0.2,
+      }),
+    height: Platform.select({
+      ios: Dimensions.height * 0.1,
+      android: Dimensions.height * 0.13,
+      default: Dimensions.height * 0.2,
+      }),
     left: Dimensions.height * 0.02,
-    top: Dimensions.height * 0.04,
+    top: Platform.select({
+      ios: Dimensions.height * 0.1,
+      android: Dimensions.height * 0.12,
+      default: Dimensions.height * 0.05,
+      }),
     alignSelf: "flex-start",
     zIndex: 1,
   },
   title: {
-    fontSize: Dimensions.height * 0.05,
-    fontFamily: "Staatliches",
+    fontSize: theme.fontSize.main,
+    fontFamily: theme.fonts.main,
     color: "#FFFFFF",
-    // left: 800,
   },
   button: {
-    width: Dimensions.width * 0.01,
-    height: Dimensions.height * 0.2,
-    left: Dimensions.width * 0.65,
+    // width: Dimensions.width * 0.1,
+    // height: Platform.select({
+    //   ios: Dimensions.width * 0.03,
+    //   android: Dimensions.width * 1,
+    //   default: Dimensions.width * 0.1,
+    //   }),
+    top:  Platform.select({
+      ios: Dimensions.width * 0.04,
+      android: Dimensions.width * 0.15,
+      default: Dimensions.width * 0.01,
+      }),
+    left: Platform.select({
+      ios: Dimensions.width * 0.04,
+      android: Dimensions.width * 0.25,
+      default: Dimensions.width * 0.48,
+      }),
     flex: -1,
   },
   adventur: {
-    top: Dimensions.width * 0.09,
-    left: Dimensions.width * 0.5,
+    top: Platform.select({
+      ios: Dimensions.width * 0.03,
+      android: Dimensions.width * 0.45,
+      default: Dimensions.width * 0.1,
+      }),
+    left: Platform.select({
+      ios: Dimensions.width * 0.1,
+      android: Dimensions.width * 0,
+      default: Dimensions.width * 0.35,
+      }),
+      width: Platform.select({
+        ios: Dimensions.width * 0.5,
+        android: Dimensions.width * 0.5,
+        default: Dimensions.width * 0.25,
+        }),
   },
+  
 });
