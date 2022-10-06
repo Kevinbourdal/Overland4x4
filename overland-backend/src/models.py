@@ -100,11 +100,12 @@ class UsuarioModel(ModelBase, db.Model):
     password = db.Column('password', db.String(30), unique=False, nullable=False)
     email = db.Column('email', db.String(40), unique=True, nullable=False)
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, password, email):
+        self.password = password
+        self.email = email
 
     def __repr__(self):
-        return f'{self.name} name'
+        return f'{self.email} email'
 
 
 class DataSchema(ma.Schema):
@@ -232,15 +233,15 @@ class ClientModel(ModelBase, db.Model):
     __tablename__ = 'client'
 
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
-    usuario = db.relationship('UsuarioModel',
-                               backref=db.backref('usuario', lazy=True))
+    usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
+    usuario_id = db.relationship('UsuarioModel',
+                              backref=db.backref('usuario_id', lazy=True))
     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
     data = db.relationship('DataModel',
                            backref=db.backref('data', lazy=True))
-    accompanist_id = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
-    accompanist = db.relationship('AccompanistModel',
-                                  backref=db.backref('accompanist', lazy=True))
+    accompanist = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
+    accompanist_id = db.relationship('AccompanistModel',
+                                     backref=db.backref('accompanist_id', lazy=True))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
     vehicle = db.relationship('VehicleModel',
                               backref=db.backref('vehicle', lazy=True))

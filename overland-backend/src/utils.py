@@ -4,6 +4,7 @@ import smtplib
 import bcrypt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import logging
 
 # from email.mime.image import MIMEImage
 
@@ -142,3 +143,16 @@ def comparate_hashed(password, hashed):
     else:
         print("Las contraseñas no son iguales")
         return False
+
+
+def log(msginfo,error):
+    logging.basicConfig(filename="Overland.log",
+                        format='%(asctime)s %(message)s',
+                        filemode='a')
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    if error == 'info':
+        logger.info(msginfo)
+    if error == 'error':
+        logger.error(msginfo)
