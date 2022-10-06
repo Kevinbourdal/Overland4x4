@@ -43,6 +43,7 @@ from utils import (
     check_minuto_ley,
     hashed_password,
     comparate_hashed,
+    log,
 )
 
 
@@ -111,13 +112,14 @@ class UserSession(BaseView):
         """
         json_data, error = get_data(request)
         if self.exists_account(email=json_data['email']):
+            log('409: Email ya registrado', 'info')
             return response(409, 'Email ya registrado')
         if not error:
             try:
                 account_data = self.UsuarioSchema.load({'email': json_data['email'],
                                                         'password': hashed_password(json_data['password'])})
             except marshmallow.exceptions.ValidationError as errors:
-                print('error', errors)
+                log('400 : ' + errors, 'error')
                 return response(400, str(errors))
 
             new_account = UsuarioModel(**account_data)
@@ -126,9 +128,10 @@ class UserSession(BaseView):
                 token = gen_token({'email': json_data['email'], 'username': json_data['username']})
                 # msg = message_register.format(json_data['username'], token) send email, in case it is required
                 # sent = send_email(json_data['email'], msg)
-                return response(200, data={'id': new_account.id})
+                log(error + 'Creat account' + new_account.email, 'info')
+                return response(200, data={'id': new_account.id, 'email': new_account.email})
 
-        print('error', error)
+        log(error, 'error')
         return response(400, msg="Error en backend")
 
     def put(self):
@@ -139,21 +142,23 @@ class UserSession(BaseView):
 
         account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
         if not self.is_valid_token_data(account_data['email']):
+            log('401 : Wrong token', 'error')
             return response(401, 'Wrong token')
         json_data, error = get_data(request)
         if not error:
             try:
                 account = UsuarioModel.query.filter_by(email=json_data['email']).first()
             except marshmallow.exceptions.ValidationError as errors:
-                print('error', errors)
+                log('400 : ' + errors, 'error')
                 return response(400, str(errors))
 
             if account is not None:
                 account.password = hashed_password(json_data['password'])
             error = account.save()
             if not error:
+                log('changue pass succeful', 'info')
                 return response(200, data={'id': account.id})
-
+        log(error, 'error')
         return response(400, msg="Error en backend")
 
     def patch(self):
@@ -191,7 +196,7 @@ class DataView(BaseView):
     def get(self):
         email = request.args.get('email', None)
         if email is not None:
-            account = UsuarioModelModel.query.filter_by(email=email).first()
+            account = UsuarioModel.query.filter_by(email=email).first()
             user = DataModel.query.filter_by(id_data=account.data).first()
             if user is not None:
                 return response(200, data={'user': {'id_data': user.id_data,
