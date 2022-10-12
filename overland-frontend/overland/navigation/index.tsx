@@ -19,6 +19,7 @@ import MisReservasScreen from "../screens/MisReservasScreen";
 import MiVehiculoScreen from "../screens/MiVehiculoScreen";
 import RegisterNavigation from "./RegisterNavigation";
 import LoginNavigation from "./LoginNavigation";
+import DriverNavigationApp from "./DriverNavigation.app";
 
 // const Banner = Platform.select({
 //   android: () => require("./Banner.app.tsx").default,
@@ -72,6 +73,11 @@ function RootNavigator() {
         name="DriverNavigation"
         component={DriverNavigation}
         options={{ title: "DriveNavigation", headerShown: false }}
+      />
+          <Stack.Screen
+        name="DriverNavigationApp"
+        component={DriverNavigationApp}
+        options={{ title: "DriveNavigationApp", headerShown: false }}
       />
       {/* <Stack.Screen
         name="MiPerfilScreen"

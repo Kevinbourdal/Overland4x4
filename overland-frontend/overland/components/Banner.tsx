@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, Image, StyleSheet, Platform } from "react-nat
 import ButtonBlueOutline from "./ButtonBlueOutline";
 import Dimensions from "../constants/dimensions";
 import theme from "./Themed";
-import dimensions from "../constants/dimensions";
+
 
 export default function Banner() {
   return (

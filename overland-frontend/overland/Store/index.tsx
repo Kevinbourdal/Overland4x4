@@ -1,9 +1,13 @@
 import {configureStore } from '@reduxjs/toolkit'
-import stackSlice from './StackSlice'
+import stackReducer from './StackSlice'
 
 
 export const store = configureStore({
     reducer:{
-        stackSlice,
+        stack:stackReducer,
     }
 })
+
+export type RootState = ReturnType<typeof store.getState>
+
+export type AppDispatch = typeof store.dispatch
