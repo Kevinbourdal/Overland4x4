@@ -1,19 +1,23 @@
 import React from "react";
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { useSelector } from "react-redux";
 import Dimensions from "../constants/dimensions";
+import { useAppSelector } from "../hooks/hooks";
 
 export default function MiPerfilScreen(){
+    const user = useAppSelector((state) => state.stack)
+
     return(
         <SafeAreaView>
             <View style={style.container}>
                 <View style={style.box}>  
                     <View>
                         <Text style={style.text}>Nombre:</Text>
-                        <Text style={style.boxText}>Kevin</Text>
+                        <Text style={style.boxText}>{user.name}</Text>
                     </View>
                     <View>
                         <Text style={style.text}>DNI:</Text>
-                        <Text style={style.boxText}>1233548789</Text>
+                        <Text style={style.boxText}>{user.dni}</Text>
                     </View>
                     <View>
                         <Text style={style.text}>Genero:</Text>

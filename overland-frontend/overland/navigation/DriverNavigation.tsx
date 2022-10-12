@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView, Dimensions, } from "react-native";
+import { View, StyleSheet, SafeAreaView} from "react-native";
 import ButtonNavigate from "../components/ButtonNavigate";
 import MiPerfilScreen from "../screens/MiPerfilScreen";
 import { RootTabScreenProps } from "../types";
-import MiVehiculoScreen from "../screens/MiVehiculoScreen";
+import MyVehicleScreen from "../screens/MiVehiculoScreen";
 import CalendarioScreen from "../screens/CalendarioScreen";
 import InscripcionScreen from "../screens/InscripcionDeTravesiaScreen";
 import MisReservasScreen from "../screens/MisReservasScreen";
@@ -113,7 +113,7 @@ function handleAcompañante() {
         </View>
         <View style={style.boxBlackDisplay}>
             {profile === true ? <MiPerfilScreen /> : <></>}
-            {myVehicle === true ? <MiVehiculoScreen /> : <></>}
+            {myVehicle === true ? <MyVehicleScreen /> : <></>}
             {calendario === true ? <CalendarioScreen /> : <></>}
             {inscripcion === true ? <InscripcionScreen /> : <></>}
             {reservas === true ? <MisReservasScreen /> : <></>}

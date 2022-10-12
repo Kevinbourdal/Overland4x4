@@ -11,7 +11,7 @@ export default function LandingPage({
   // const driverNavigate = Platform.select({
   //   android: () => require("./DriverNavigationApp").default,
   //   default: () => require("./DriverNavigate").default
-  // })()
+  // })();
   function handleSubmitDriver() {
     navigation.navigate("DriverNavigation");
   }

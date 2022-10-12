@@ -1,31 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios, { Axios } from "axios";
+import type {RootState} from '../index'
 
-const initialState = {
-    usuarios:[],
+interface UserState{
+ id: number,
+ name: string,
+ dni: number,
+ genero: string,
 }
+const initialState : UserState =
+     {
+        id:1,
+        name: "Kevin",
+        dni:37388807,
+        genero:"masculino"         
+    }
 
-const stackSlice = createSlice({
+
+export const stackSlice = createSlice({
     name:'users',
-    initialState:{
-        userList: [],
-    },
+    initialState,
     reducers:{
-        setUserList:(state, action) =>{
-            state.userList = action.payload
-        },
+       
     }
 })
 
-export const {setUserList} = stackSlice.actions
+
+export const selectUsers = (state: RootState) => state.stack
 
 export default stackSlice.reducer
 
-export const fetchAllUser = () => (dispatch:any) => {
-    axios
-    .get("http://localhost:5000/api/usuario")
-    .then((response) => {
-        dispatch(setUserList(response.data))
-    })
-    .catch((error) => console.log(error));
-}

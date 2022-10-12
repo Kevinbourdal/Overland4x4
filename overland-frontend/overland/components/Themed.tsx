@@ -26,6 +26,10 @@ const theme ={
     default: 40
     }),
   },
+  colors:{
+    textPrimary: '#fff',
+    textSecondary: '#999s'
+  }
 }
 
 export default theme;
