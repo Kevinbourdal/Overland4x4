@@ -91,6 +91,7 @@ class UsuarioSchema(ma.Schema):
     id_usuario = fields.Integer()
     password = fields.String(required=True)
     email = fields.String(required=True)
+    role_id = fields.Integer()
 
 
 class UsuarioModel(ModelBase, db.Model):
@@ -99,6 +100,9 @@ class UsuarioModel(ModelBase, db.Model):
     id_usuario = db.Column('id_usuario', db.Integer, autoincrement=True, primary_key=True)
     password = db.Column('password', db.String(30), unique=False, nullable=False)
     email = db.Column('email', db.String(40), unique=True, nullable=False)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'), nullable=False)
+    role = db.relationship('RoleModel',
+                           backref=db.backref('role', lazy=True))
 
     def __init__(self, password, email):
         self.password = password
@@ -225,7 +229,6 @@ class ClientSchema(ma.Schema):
     data = fields.Integer()
     accompanist = fields.Integer()
     vehicle = fields.Integer()
-    rol = fields.Integer()
     hotel = fields.Integer()
 
 
@@ -235,7 +238,7 @@ class ClientModel(ModelBase, db.Model):
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
     usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
     usuario_id = db.relationship('UsuarioModel',
-                              backref=db.backref('usuario_id', lazy=True))
+                               backref=db.backref('usuario', lazy=True))
     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
     data = db.relationship('DataModel',
                            backref=db.backref('data', lazy=True))
@@ -245,9 +248,6 @@ class ClientModel(ModelBase, db.Model):
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
     vehicle = db.relationship('VehicleModel',
                               backref=db.backref('vehicle', lazy=True))
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'), nullable=False)
-    role = db.relationship('RoleModel',
-                           backref=db.backref('role', lazy=True))
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
     hotel = db.relationship('HotelModel',
                             backref=db.backref('hotel', lazy=True))
