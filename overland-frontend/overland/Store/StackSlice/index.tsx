@@ -24,9 +24,9 @@ var initialState : UserState =
     }
 export const getUserState = createAsyncThunk<UserState[]>(
     "client/mi_perfil",
-    async (_, thunkAPI) =>{
+    async (email, thunkAPI) =>{
         try{
-            const response = await axios.get("http://localhost:5000/api/mi_perfil")
+            const response = await axios.get("http://localhost:5000/api/mi_perfil" + email)
             return response.data;
         }catch(error){
             return thunkAPI.rejectWithValue(error)
@@ -53,9 +53,10 @@ export const stackSlice = createSlice({
         if(action.payload != null)
         state.data?.push(action.payload)
        },
-       changeUserData: (state:UserState, action: PayloadAction) =>{
+       changeUserData: (state, action: PayloadAction<any>) =>{
         if(action.payload != null)
-            state.data = action.payload
+            state.data?.push(action.payload)
+            console.log(state.data)
        },
     }
 })
