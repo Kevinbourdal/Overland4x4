@@ -101,12 +101,12 @@ class UsuarioModel(ModelBase, db.Model):
     password = db.Column('password', db.String(30), unique=False, nullable=False)
     email = db.Column('email', db.String(40), unique=True, nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'), nullable=False)
-    role = db.relationship('RoleModel',
-                           backref=db.backref('role', lazy=True))
+    role = db.relationship('RoleModel')
 
-    def __init__(self, password, email):
+    def __init__(self, password, email, role_id):
         self.password = password
         self.email = email
+        self.role_id = role_id
 
     def __repr__(self):
         return f'{self.email} email'
@@ -114,47 +114,34 @@ class UsuarioModel(ModelBase, db.Model):
 
 class DataSchema(ma.Schema):
     id_data = fields.Integer()
-    client_rol = fields.Integer()
-    gender = fields.Integer()
+    client = fields.Integer()
+    gender = fields.String()
     pathologies = fields.Integer()
+    # palotogias para mas adelante por que son bidireccional
     nationality = fields.Integer()
     phone = fields.Integer(required=True)
     born = fields.Date(required=True, format='%Y-%m-%d')
     observ_lunch = fields.String()
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
-    card_id = fields.Integer(required=True)
 
 
 class DataModel(ModelBase, db.Model):
     __tablename__ = 'data'
 
     id_data = db.Column('id_data', db.Integer, autoincrement=True, primary_key=True)
-    card_id = db.Column('card_id', db.Integer, unique=False, nullable=False, primary_key=True)
-    client_rol_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
-    client_rol = db.relationship('ClientModel',
-                                 backref=db.backref('id_client', lazy=True))
-    gender_id = db.Column(db.Integer, db.ForeignKey('gender.id_gender', ondelete='CASCADE'), nullable=False)
-    gender = db.relationship('GenderModel',
-                             backref=db.backref('gender', lazy=True))
-    pathologies_id = db.Column('pathologies', db.Integer,
-                               db.ForeignKey('pathologies.id_pathologies', ondelete='CASCADE'),
-                               nullable=False)
-    pathologies = db.relationship('PathologiesModel',
-                                  backref=db.backref('pathologies', lazy=True))
-    nationality_id = db.Column(db.Integer, db.ForeignKey('nationality.id_nationality', ondelete='CASCADE'),
-                               nullable=False)
-    nationality = db.relationship('NationalityModel',
-                                  backref=db.backref('nationality', lazy=True))
-    phone = db.Column('phone', db.Integer, unique=False, nullable=False)
-    born = db.Column('born', db.Date, unique=False, nullable=False)
-    observ_lunch = db.Column('observ_lunch', db.String(255), unique=False, nullable=False)
-    first_name = db.Column('first_name', db.String(30), unique=False, nullable=False)
-    last_name = db.Column('last_name', db.String(30), unique=False, nullable=False)
+    phone = db.Column('phone', db.Integer, nullable=False)
+    born = db.Column('born', db.Date, nullable=False)
+    observ_lunch = db.Column('observ_lunch', db.String(255), nullable=False)
+    first_name = db.Column('first_name', db.String(30), nullable=False)
+    last_name = db.Column('last_name', db.String(30), nullable=False)
+    gender = db.column('gender', db.String(30), nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
+    client = db.relationship('ClientModel')
 
-    def __init__(self, client_rol, gender, pathologies, nationality, phone, born,
-                 observ_lunch, first_name, last_name, card_id):
-        self.client_rol = client_rol
+    def __init__(self, client, gender, pathologies, nationality, phone, born,
+                 observ_lunch, first_name, last_name):
+        self.client = client
         self.gender = gender
         self.pathologies = pathologies
         self.nationality = nationality
@@ -163,28 +150,9 @@ class DataModel(ModelBase, db.Model):
         self.observ_lunch = observ_lunch
         self.first_name = first_name
         self.last_name = last_name
-        self.card_id = card_id
 
     def __repr__(self):
         return f'Id : {self.id_data} Document : {self.card_id} Name : {self.first_name}'
-
-
-class GenderSchema(ma.Schema):
-    id_gender = fields.Integer()
-    name = fields.String()
-
-
-class GenderModel(ModelBase, db.Model):
-    __tablename__ = 'gender'
-
-    id_gender = db.Column('id_gender', db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column('name', db.String(15), default='Unauthorized')
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return f'{self.name} name'
 
 
 class NationalitySchema(ma.Schema):
@@ -208,6 +176,7 @@ class NationalityModel(ModelBase, db.Model):
 class PathologiesSchema(ma.Schema):
     id_pathologies = fields.Integer()
     name = fields.String()
+    # Aca las patologias tienen que ser bidireccional
 
 
 class PathologiesModel(ModelBase, db.Model):
@@ -238,7 +207,7 @@ class ClientModel(ModelBase, db.Model):
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
     usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
     usuario_id = db.relationship('UsuarioModel',
-                               backref=db.backref('usuario', lazy=True))
+                                 backref=db.backref('usuario', lazy=True))
     data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
     data = db.relationship('DataModel',
                            backref=db.backref('data', lazy=True))
