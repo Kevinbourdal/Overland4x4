@@ -116,9 +116,9 @@ class DataSchema(ma.Schema):
     id_data = fields.Integer()
     client = fields.Integer()
     gender = fields.String()
-    pathologies = fields.Integer()
-    # palotogias para mas adelante por que son bidireccional
-    nationality = fields.Integer()
+    # pathologies = fields.Integer()
+    # # palotogias no va porque cree una tabla intermedia para comunicarlos
+    nationality = fields.String(required=True)
     phone = fields.Integer(required=True)
     born = fields.Date(required=True, format='%Y-%m-%d')
     observ_lunch = fields.String()
@@ -136,8 +136,9 @@ class DataModel(ModelBase, db.Model):
     first_name = db.Column('first_name', db.String(30), nullable=False)
     last_name = db.Column('last_name', db.String(30), nullable=False)
     gender = db.column('gender', db.String(30), nullable=False)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
-    client = db.relationship('ClientModel')
+    nationality = db.Column('nationality', db.String(30), nullable=False)
+    client = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
+    client_id = db.relationship('ClientModel')
 
     def __init__(self, client, gender, pathologies, nationality, phone, born,
                  observ_lunch, first_name, last_name):
@@ -153,6 +154,28 @@ class DataModel(ModelBase, db.Model):
 
     def __repr__(self):
         return f'Id : {self.id_data} Document : {self.card_id} Name : {self.first_name}'
+
+
+class PathologiesDataSchema(ma.Schema):
+    id = fields.Integer()
+    data = fields.Integer()
+    pathologies = fields.Integer()
+
+
+class PathologiesDataModel(ModelBase, db.Model):
+    __tablename__ = 'pathologiesData'
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key=True)
+    data = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    data_id = db.relationship('DataModel')
+    pathologies = db.Column(db.Integer, db.ForeignKey('pathologies.id_pathologies', ondelete='CASCADE'), nullable=False)
+    pathologies_id = db.relationship('PathologiesModel')
+
+    def __init__(self, data, pathologies):
+        self.data = data
+        self.pathologies = pathologies
+
+    def __repr__(self):
+        return f'{self.data} data , {self.pathologies} pathologies'
 
 
 class NationalitySchema(ma.Schema):
