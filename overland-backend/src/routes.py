@@ -1,6 +1,5 @@
 from views import (
     DataView,
-    GenderView,
     PathologiesView,
     AccompanistView,
     RoleView,
@@ -28,11 +27,6 @@ urls = [
         'resource': DataView,
         'path': '/mi_perfil',
         'endpoint': 'mi_perfil',
-    },
-    {
-        'resource': GenderView,
-        'path': '/genders',
-        'endpoint': 'genders',
     },
     {
         'resource': PathologiesView,

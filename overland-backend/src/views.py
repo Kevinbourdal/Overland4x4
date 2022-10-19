@@ -11,8 +11,6 @@ from models import (
     RoleModel,
     DataSchema,
     DataModel,
-    GenderSchema,
-    GenderModel,
     PathologiesSchema,
     PathologiesModel,
     ClientSchema,
@@ -28,7 +26,9 @@ from models import (
     AccompanistSchema,
     AccompanistModel,
     UsuarioModel,
-    UsuarioSchema
+    UsuarioSchema,
+    PathologiesDataModel,
+    PathologiesDataSchema
 )
 
 from utils import (
@@ -444,45 +444,6 @@ class ClientView(BaseView):
             if not error:
                 return response(200, data={'id': client.id})
 
-        return response(400, msg="Error en backend")
-
-
-class GenderView(BaseView):
-
-    def __init__(self):
-        super(GenderView, self).__init__()
-        self.gender_schema = GenderSchema()
-
-    def get(self):
-        gender = GenderModel.query
-        if gender is not None:
-            return response(200, data={'gender': {'id_gender': gender.id_gender,
-                                                  'name': gender.name}})
-        return response(400)
-
-    def post(self):
-        account_data = decode_token(request.headers.environ['HTTP_AUTHORIZATION'])
-        if not self.is_valid_token_data(account_data['email']):
-            return response(401, 'Wrong token')
-        json_data, error = get_data(request)
-        if not error:
-            account = UsuarioModel.query.filter_by(email=json_data['email']).first()
-            if account is not None:
-                try:
-                    gender_data = self.gender_schema.load({'name': json_data['name']})
-
-                except marshmallow.exceptions.ValidationError as errors:
-                    print('error', errors)
-                    return response(400, str(errors))
-                new_gender = GenderModel(**gender_data)
-                error = new_gender.save()
-                if not error:
-                    return response(200, data={'id': new_gender.id_gender})
-                print(error)
-                return error
-            else:
-                print('gender don\'t exists')
-        print(error)
         return response(400, msg="Error en backend")
 
 
