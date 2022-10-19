@@ -136,7 +136,7 @@ class DataModel(ModelBase, db.Model):
     first_name = db.Column('first_name', db.String(30), nullable=False)
     last_name = db.Column('last_name', db.String(30), nullable=False)
     gender = db.column('gender', db.String(30), nullable=False)
-    nationality = db.Column('nationality', db.String(30), nullable=False)
+    nationality = db.Column('nationality', db.String(40), nullable=False)
     client = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'), nullable=False)
     client_id = db.relationship('ClientModel')
 
@@ -178,35 +178,16 @@ class PathologiesDataModel(ModelBase, db.Model):
         return f'{self.data} data , {self.pathologies} pathologies'
 
 
-class NationalitySchema(ma.Schema):
-    id_nationality = fields.Integer()
-    name = fields.String()
-
-
-class NationalityModel(ModelBase, db.Model):
-    __tablename__ = 'nationality'
-
-    id_nationality = db.Column('id_nationality', db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column('name', db.String(40), default='Unauthorized')
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return f'{self.name} nationality'
-
-
 class PathologiesSchema(ma.Schema):
     id_pathologies = fields.Integer()
     name = fields.String()
-    # Aca las patologias tienen que ser bidireccional
 
 
 class PathologiesModel(ModelBase, db.Model):
     __tablename__ = 'pathologies'
 
     id_pathologies = db.Column('id_pathologies', db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column('name', db.String(40), default='Unauthorized')
+    name = db.Column('name', db.String(60), default='Unauthorized')
 
     def __init__(self, name):
         self.name = name
@@ -229,28 +210,21 @@ class ClientModel(ModelBase, db.Model):
 
     id_client = db.Column('id_client', db.Integer, autoincrement=True, primary_key=True)
     usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario', ondelete='CASCADE'), nullable=False)
-    usuario_id = db.relationship('UsuarioModel',
-                                 backref=db.backref('usuario', lazy=True))
-    data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-    data = db.relationship('DataModel',
-                           backref=db.backref('data', lazy=True))
-    accompanist = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist'), nullable=False)
-    accompanist_id = db.relationship('AccompanistModel',
-                                     backref=db.backref('accompanist_id', lazy=True))
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
-    vehicle = db.relationship('VehicleModel',
-                              backref=db.backref('vehicle', lazy=True))
-    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
-    hotel = db.relationship('HotelModel',
-                            backref=db.backref('hotel', lazy=True))
+    usuario_id = db.relationship('UsuarioModel')
+    data = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    data_id = db.relationship('DataModel')
+    accompanist = db.Column(db.Integer, db.ForeignKey('accompanist.id_accompanist', ondelete='CASCADE'), nullable=False)
+    accompanist_id = db.relationship('AccompanistModel')
+    vehicle = db.Column(db.Integer, db.ForeignKey('vehicle.id_vehicle', ondelete='CASCADE'), nullable=False)
+    vehicle_id = db.relationship('VehicleModel')
+    hotel = db.Column(db.Integer, db.ForeignKey('hotel.id_hotel', ondelete='CASCADE'), nullable=False)
+    hotel_id = db.relationship('HotelModel')
 
-    def __init__(self, data, accompanist, vehicle, rol, hotel, password, email):
+    def __init__(self, usuario, data, accompanist, vehicle, hotel):
+        self.usuario = usuario
         self.data = data
-        self.password = password
-        self.email = email
         self.accompanist = accompanist
         self.vehicle = vehicle
-        self.rol = rol
         self.hotel = hotel
 
     def __repr__(self):
@@ -341,26 +315,24 @@ class LunchModel(ModelBase, db.Model):
 
 class HotelSchema(ma.Schema):
     id_hotel = fields.Integer()
-    rooms = fields.Integer()
     name = fields.String()
-    lunch = fields.Integer()
     address = fields.String()
     quantity_rooms = fields.Integer()
+    rooms = fields.Integer()
+    lunch = fields.Integer()
 
 
 class HotelModel(ModelBase, db.Model):
     __tablename__ = 'hotel'
 
     id_hotel = db.Column('id_hotel', db.Integer, autoincrement=True, primary_key=True)
-    rooms_id = db.Column(db.Integer, db.ForeignKey('rooms.id_rooms', ondelete='CASCADE'), nullable=False)
-    rooms = db.relationship('RoomsModel',
-                            backref=db.backref('rooms', lazy=True))
     name = db.Column('name', db.String(60), default='Unauthorized')
-    lunch_id = db.Column(db.Integer, db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
-    lunch = db.relationship('LunchModel',
-                            backref=db.backref('lunch', lazy=True))
     address = db.Column('address', db.String(60), default='Unauthorized')
     quantity_rooms = db.Column('quantity_rooms', db.Integer, default='Unauthorized')
+    rooms = db.Column(db.Integer, db.ForeignKey('rooms.id_rooms', ondelete='CASCADE'), nullable=False)
+    rooms_id = db.relationship('RoomsModel')
+    lunch = db.Column(db.Integer, db.ForeignKey('lunch.id_lunch', ondelete='CASCADE'), nullable=False)
+    lunch_id = db.relationship('LunchModel')
 
     def __init__(self, rooms, lunch, address, quantity_rooms, name):
         self.rooms = rooms
@@ -375,7 +347,6 @@ class HotelModel(ModelBase, db.Model):
 
 class AccompanistSchema(ma.Schema):
     id_accompanist = fields.Integer()
-    client = fields.Integer()
     data = fields.Integer()
 
 
@@ -383,18 +354,13 @@ class AccompanistModel(ModelBase, db.Model):
     __tablename__ = 'accompanist'
 
     id_accompanist = db.Column('id_accompanist', db.Integer, autoincrement=True, primary_key=True)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id_client', ondelete='CASCADE'))
-    client = db.relationship('ClientModel',
-                             backref=db.backref('client', lazy=True))
-    data_id = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
-    data = db.relationship('DataModel',
-                           backref=db.backref('data', lazy=True))
+    data = db.Column(db.Integer, db.ForeignKey('data.id_data', ondelete='CASCADE'), nullable=False)
+    data_id = db.relationship('DataModel')
 
-    def __init__(self, client, data):
-        self.client = client
+    def __init__(self, data):
         self.data = data
 
     def __repr__(self):
-        return f'{self.client} accompanist'
+        return f'{self.id_accompanist} accompanist'
 
 # puta la wea
