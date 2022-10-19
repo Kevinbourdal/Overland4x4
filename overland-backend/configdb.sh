@@ -24,6 +24,8 @@ docker inspect mysql-overland | grep "IPAddress"
 #
 #insert into usuario (id_usuario, email, password, role_id) values (0,'cortadoverde@siemrpe.com', 'cortadoVerde1',4);
 #insert into client (id_client, usuario_id, data, accompanist, vehicle, hotel) values (0, 4, 0, 0, 0, 0, 0);
+#insert into data (client_rol_id, gender_id, pathologies, nationality_id, phone, born, observ_lunch, first_name, last_name, card_id ) values (4, 0, 0, 0, 1350, "1993/02/17", "blalblalva", "mailen", "bourdal", 0);
+
 ############
 
 
