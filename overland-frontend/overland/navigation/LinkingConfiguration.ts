@@ -25,6 +25,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               DriverNavigation:'DriverNavigation'
             },
           },
+          DriverNavigationApp:{
+            screens:{
+              DriverNavigationApp:'DriverNavigationApp'
+            },
+          },
           MiPerfil:{
             screens:{
               MiPerfilScreeen:'MiPerfil'

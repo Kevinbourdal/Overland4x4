@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableHighlight, StyleSheet } from "react-native"
 import { Icon } from '@iconify/react';
+import dimensions from "../constants/dimensions";
 
 export default function ButtonNavigate(props: any){
     const {text, onPress} = props
@@ -14,10 +15,10 @@ export default function ButtonNavigate(props: any){
 
 const style = StyleSheet.create({
     button:{
-        paddingVertical: 15,
-        width: "20%",
+        paddingVertical: dimensions.width * 0.012,
+        width: dimensions.width * 0.17,
         overflow: "hidden",
-        marginVertical: 10,
+        marginVertical: dimensions.height * 0.017,
         // borderRadius: 10,
         // borderWidth: 4,
         // borderColor: "#FF4B2B",

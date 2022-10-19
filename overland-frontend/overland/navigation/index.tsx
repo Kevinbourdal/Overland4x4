@@ -5,13 +5,12 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Platform, Pressable, View } from "react-native";
 import LinkingConfiguration from "./LinkingConfiguration";
 import LandingPage from "../Landing/LandingPage";
 import DriverNavigation from "./DriverNavigation";
 import PassengerNavigation from "./PassengerNavigation";
 import Banner from "../components/Banner";
-import { View } from "../components/Themed";
 import MiPerfilScreen from "../screens/MiPerfilScreen";
 import AgregarAcompañanteScreen from "../screens/AgregarAcompañanteScreen";
 import CalendarioScreen from "../screens/CalendarioScreen";
@@ -20,6 +19,12 @@ import MisReservasScreen from "../screens/MisReservasScreen";
 import MiVehiculoScreen from "../screens/MiVehiculoScreen";
 import RegisterNavigation from "./RegisterNavigation";
 import LoginNavigation from "./LoginNavigation";
+import DriverNavigationApp from "./DriverNavigation.app";
+
+// const Banner = Platform.select({
+//   android: () => require("./Banner.app.tsx").default,
+//   default: () => require("./Banner.tsx").default
+// })()
 
 export default function Navigation({
   colorScheme,
@@ -44,7 +49,7 @@ const Stack = createNativeStackNavigator();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Register"
         component={RegisterNavigation}
         options={{ title: "Register", headerShown: false }}
@@ -53,23 +58,28 @@ function RootNavigator() {
         name="Login"
         component={LoginNavigation}
         options={{ title: "Login", headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="LandingPage"
         component={LandingPage}
         options={{ title: "LandingPage", headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="PassengerNavigation"
         component={PassengerNavigation}
         options={{ title: "PassengerNavigation", headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="DriverNavigation"
         component={DriverNavigation}
         options={{ title: "DriveNavigation", headerShown: false }}
       />
-      <Stack.Screen
+          <Stack.Screen
+        name="DriverNavigationApp"
+        component={DriverNavigationApp}
+        options={{ title: "DriveNavigationApp", headerShown: false }}
+      />
+      {/* <Stack.Screen
         name="MiPerfilScreen"
         component={MiPerfilScreen}
         options={{ title: "MiPerfilScreen", headerShown: false }}
@@ -98,7 +108,7 @@ function RootNavigator() {
         name="MiVehiculoScreen"
         component={MiVehiculoScreen}
         options={{ title: "MiVehiculoScreen", headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

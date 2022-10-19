@@ -1,20 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { Axios } from "axios";
+import type {RootState} from '../index'
 
-const initialState = {
-    usuarios:[],
+interface UserState{
+ id: number,
+ name: string,
+ dni: number,
+ genero: string,
 }
+const initialState : UserState =
+     {
+        id:1,
+        name: "Kevin",
+        dni:37388807,
+        genero:"masculino"         
+    }
 
-const stackSlice = createSlice({
-    name:'usuarios',
+
+export const stackSlice = createSlice({
+    name:'users',
     initialState,
     reducers:{
-        addUsuarios:(state, action) =>{
-            state.usuarios = [...state.usuarios, action.payload]
-        },
+       
     }
 })
 
-export const {addUsuarios} = stackSlice.actions
+
+export const selectUsers = (state: RootState) => state.stack
 
 export default stackSlice.reducer
+
